@@ -1,0 +1,3 @@
+/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/Boltzmann1DBGKSolver.dir
+/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/edit_cache.dir
+/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/rebuild_cache.dir

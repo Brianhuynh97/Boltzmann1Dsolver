@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/brianhuynh/Boltzmann 1D Solver",
+      "program": "/Users/brianhuynh/Boltzmann 1D Solver/build/Debug/outDebug"
+    }
+  ]
+}
