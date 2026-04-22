@@ -3,7 +3,7 @@
 #include <concepts>
 
 /*
-    концепт для RK: rkMethod::step(...) -> Type
+    RK: rkMethod::step(...) -> Type
 */
 /*
 template <
@@ -15,14 +15,15 @@ template <
 */
 
 /*
-    концепт для Func: Func(Type u, Type t) -> Type
+    Func: Func(Type u, Type t) -> Type
 */
 
 template <std::floating_point T, typename Y, typename F>
-using RkStepY = Y(*)(F f, Y y, T tau);
+using RkStepY = Y (*)(F f, Y y, T tau);
 
 // Type - time type, Y - phase coordinate type
-struct SSPRK3 {
+struct SSPRK3
+{
     /*
     static unsigned int svtages;
     static Type a[];
@@ -30,8 +31,9 @@ struct SSPRK3 {
     */
 
     // RK step for f w/ signature f(Type, Y)
-    template<typename T, typename Y, typename Func>
-    static inline Y stepTY(Func f, T t, Y y, T tau) {
+    template <typename T, typename Y, typename Func>
+    static inline Y stepTY(Func f, T t, Y y, T tau)
+    {
         Y k1 = f(t, y);
         Y k2 = f(t + tau, y + tau * k1);
         Y k3 = f(t + T(0.5f) * tau, y + T(0.25f) * tau * (k1 + k2));
@@ -40,8 +42,9 @@ struct SSPRK3 {
     }
 
     // RK step for f w/ signature f(Y, Type)
-    template<typename T, typename Y, typename Func>
-    static inline Y stepYT(Func f, Y y, T t, T tau) {
+    template <typename T, typename Y, typename Func>
+    static inline Y stepYT(Func f, Y y, T t, T tau)
+    {
         Y k1 = f(y, t);
         Y k2 = f(y + tau * k1, t + tau);
         Y k3 = f(y + T(0.25f) * tau * (k1 + k2), t + T(0.5f) * tau);
@@ -50,8 +53,9 @@ struct SSPRK3 {
     }
 
     // RK step for f w/ signature f(Y)
-    template<typename T, typename Y, typename Func>
-    static inline Y stepY(Func f, Y y, T tau) {
+    template <typename T, typename Y, typename Func>
+    static inline Y stepY(Func f, Y y, T tau)
+    {
         Y k1 = f(y);
         Y k2 = f(y + tau * k1);
         Y k3 = f(y + T(0.25f) * tau * (k1 + k2));
@@ -61,15 +65,17 @@ struct SSPRK3 {
 };
 
 // Type - time type, Y - phase coordinate type
-struct HeunsMethodRK {
+struct HeunsMethodRK
+{
     /*
     static unsigned int stages;
     static Type a[];
     static Type b[];
     */
     // RK step for f w/ signature f(Type, Y)
-    template<typename T, typename Y, typename Func>
-    static inline Y stepTY(Func f, T t, Y y, T tau) {
+    template <typename T, typename Y, typename Func>
+    static inline Y stepTY(Func f, T t, Y y, T tau)
+    {
         Y k1 = f(t, y);
         Y k2 = f(t + tau, y + tau * k1);
 
@@ -77,8 +83,9 @@ struct HeunsMethodRK {
     }
 
     // RK step for f w/ signature f(Y, Type)
-    template<typename T, typename Y, typename Func>
-    static inline Y stepYT(Func f, Y y, T t, T tau) {
+    template <typename T, typename Y, typename Func>
+    static inline Y stepYT(Func f, Y y, T t, T tau)
+    {
         Y k1 = f(y, t);
         Y k2 = f(y + tau * k1, t + tau);
 
@@ -86,8 +93,9 @@ struct HeunsMethodRK {
     }
 
     // RK step for f w/ signature f(Y)
-    template<typename T, typename Y, typename Func>
-    static inline Y stepY(Func f, Y y, T tau) {
+    template <typename T, typename Y, typename Func>
+    static inline Y stepY(Func f, Y y, T tau)
+    {
         Y k1 = f(y);
         Y k2 = f(y + tau * k1);
 
@@ -95,29 +103,32 @@ struct HeunsMethodRK {
     }
 };
 
-
 // Type - time type, Y - phase coordinate type
-struct ExplicitEulerRK {
+struct ExplicitEulerRK
+{
     /*
     static unsigned int stages;
     static Type a[];
     static Type b[];
     */
     // RK step for f w/ signature f(Type, Y)
-    template<typename T, typename Y, typename Func>
-    static inline Y stepTY(Func f, T t, Y y, T tau) {
+    template <typename T, typename Y, typename Func>
+    static inline Y stepTY(Func f, T t, Y y, T tau)
+    {
         return y + tau * f(t, y);
     }
 
     // RK step for f w/ signature f(Y, Type)
-    template<typename T, typename Y, typename Func>
-    static inline Y stepYT(Func f, Y y, T t, T tau) {
+    template <typename T, typename Y, typename Func>
+    static inline Y stepYT(Func f, Y y, T t, T tau)
+    {
         return y + tau * f(y, t);
     }
 
     // RK step for f w/ signature f(Y)
-    template<typename T, typename Y, typename Func>
-    static inline Y stepY(Func f, Y y, T tau) {
+    template <typename T, typename Y, typename Func>
+    static inline Y stepY(Func f, Y y, T tau)
+    {
         return y + tau * f(y);
     }
 };
@@ -130,7 +141,7 @@ template <typename Type>
 Type SSPRK3<Type>::a[] = {Type(0), Type(1), Type(0.5)};
 
 template <typename Type>
-Type SSPRK3<Type>::b[] = { 
+Type SSPRK3<Type>::b[] = {
     {Type(0), Type(1), Type(0.5)},
     {Type(1), Type(0), Type(0)}
     {Type(0.25), Type(0.25), Type(0)}
@@ -168,6 +179,3 @@ vector<Type> rungeKuttaTemplateStep(const RungeKuttaParams<Type>& rkParams, Type
     return nextY;
 }
 */
-
-
-

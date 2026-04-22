@@ -1995,17 +1995,10 @@ CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/solver/main.cpp.o
  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include/stdarg.h
  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include/stddef.h
  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include/stdint.h
- /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/interface/MacroparametersFileInterface.h
- /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/solver/BoltzmannEq1DProblems.h
- /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/solver/BoltzmannEq1DSolvers.h
+ /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/solver/BGKChannel1D.h
  /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/solver/FullBoltzmann1D3V.h
- /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/solver/LinearizedBGKChannel1D.h
- /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/solver/Mkt.h
  /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/utils/AdditionalMath.h
- /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/utils/Integration.h
- /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/utils/Norma.h
  /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/utils/OpenMpCompat.h
- /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/utils/VectorOperations.h
  /Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/utils/rkMethods.h
 
 CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.o

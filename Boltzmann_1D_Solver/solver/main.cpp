@@ -1,17 +1,14 @@
 #include <algorithm>
-#include <cmath>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <string_view>
+#include <vector>
 
-#include "BoltzmannEq1DProblems.h"
-#include "BoltzmannEq1DSolvers.h"
+#include "BGKChannel1D.h"
 #include "FullBoltzmann1D3V.h"
-#include "LinearizedBGKChannel1D.h"
-#include "MacroparametersFileInterface.h"
-#include "Mkt.h"
 #include "OpenMpCompat.h"
 #include "rkMethods.h"
 
@@ -20,58 +17,34 @@ namespace {
 constexpr int kRequestedThreadCount = 20;
 
 enum class Scenario {
-    FullBoltzmannCouette,
-    FullBoltzmannPoiseuille,
-    FullBoltzmannHeatConduction,
-    FullBoltzmannUniformEquilibrium,
-    Sod,
-    Density10,
-    StudentSpringDensity,
-    FreeMoleculeDensity,
-    EmittingWall,
-    EvaporatingWall
+    Couette,
+    Poiseuille,
+    HeatConduction,
+    FullCouette,
+    FullPoiseuille,
+    FullHeatConduction
 };
 
 template <std::floating_point T>
 auto everyNthStepOutputRule(T dt, int stepInterval) {
     return [dt, stepInterval](T t) {
-        return stepInterval > 0 && static_cast<int>(std::lround(t / dt)) % stepInterval == 0;
+        return stepInterval > 0 && static_cast<int>(t / dt + T(0.5)) % stepInterval == 0;
     };
 }
 
-void plotAndOpenFullBoltzmannResults(const std::filesystem::path& outputDir) {
-    const std::string summaryPlotCommand =
-        "python3 scripts/plot_full_boltzmann_shock_tube.py \"" + outputDir.string() + "\"";
-
-    const int summaryPlotStatus = std::system(summaryPlotCommand.c_str());
-    if (summaryPlotStatus != 0) {
-        std::cerr << "summary plot generation failed with status " << summaryPlotStatus << '\n';
-        return;
+void writeConvergenceHistory(
+    const std::filesystem::path& outputDir,
+    const std::vector<double>& convergenceHistory
+) {
+    std::ofstream convergenceOutput(outputDir / "convergence_history.txt");
+    for (std::size_t i = 0; i < convergenceHistory.size(); ++i) {
+        convergenceOutput << i << ' ' << convergenceHistory[i] << '\n';
     }
-
-    const std::string distributionPlotCommand =
-        "python3 scripts/plot_distribution_contour.py \"" + outputDir.string() + "\"";
-    const int distributionPlotStatus = std::system(distributionPlotCommand.c_str());
-    if (distributionPlotStatus != 0) {
-        std::cerr << "distribution contour generation failed with status " << distributionPlotStatus << '\n';
-    }
-
-    const std::filesystem::path plotPath = outputDir / "summary_plot.png";
-
-#if defined(__APPLE__)
-    const std::string openCommand = "open \"" + plotPath.string() + "\"";
-    const int openStatus = std::system(openCommand.c_str());
-    if (openStatus != 0) {
-        std::cerr << "plot was generated but could not be opened automatically: " << plotPath << '\n';
-    }
-#else
-    std::cout << "plot saved to " << plotPath << '\n';
-#endif
 }
 
-void plotAndOpenChannelCouetteResults(const std::filesystem::path& outputDir) {
+void plotAndOpenChannelResults(const std::filesystem::path& outputDir) {
     const std::string profilePlotCommand =
-        "python3 scripts/plot_linearized_bgk_channel.py \"" + outputDir.string() + "\"";
+        "python3 scripts/plot_bgk_channel.py \"" + outputDir.string() + "\"";
     const int profilePlotStatus = std::system(profilePlotCommand.c_str());
     if (profilePlotStatus != 0) {
         std::cerr << "channel profile generation failed with status " << profilePlotStatus << '\n';
@@ -97,260 +70,233 @@ void plotAndOpenChannelCouetteResults(const std::filesystem::path& outputDir) {
 #endif
 }
 
+void plotFullBoltzmannResults(
+    const std::string& caseName,
+    const std::filesystem::path& fullOutputDir
+) {
+    const std::filesystem::path bgkOutputDir = std::filesystem::path("output/bgk_channel") / caseName;
+    const std::string command =
+        "python3 scripts/plot_bgk_full_comparison.py \"" + caseName + "\" \"" +
+        bgkOutputDir.string() + "\" \"" + fullOutputDir.string() + "\"";
+
+    const int status = std::system(command.c_str());
+    if (status != 0) {
+        std::cerr << "BGK/full comparison plot generation failed with status " << status << '\n';
+    }
+}
+
 void configureOpenMp() {
     const int availableThreads = omp_get_max_threads();
     omp_set_num_threads(std::min(kRequestedThreadCount, availableThreads));
     std::cout << "num_threads: " << omp_get_max_threads() << '\n';
 }
 
-void runStudentSpringDensityTest() {
-    constexpr double tEnd = 5.0;
-    constexpr double dt = 0.001;
+void runCouetteCase(
+    const std::filesystem::path& outputDir = "output/bgk_channel/couette",
+    bool generatePlot = true
+) {
+    using namespace bgk_channel;
 
-    const auto data = densityRiemannProblem<double>(1.0, 2.0, 1.0, 150, 5.0, 45, 4.0, dt, tEnd, 100.0);
-    Full1dStateOutput output("output/bgk1d/testDensityMultiple");
-
-    bgk1dMethod<ExplicitEulerRK>(data, Cell1stOrderInt, output, everyNthStepOutputRule(dt, 100));
-}
-
-void runFreeMoleculeDensityTest() {
-    constexpr double tEnd = 10.0;
-    constexpr double dt = 0.001;
-
-    const auto data = densityRiemannProblem<double>(1.0, 2.0, 1.0, 150, 5.0, 224, 4.0, dt, tEnd, 0.0, 1.0);
-    Full1dStateOutput output("output/bgk1d/testFreeMoleculeDensityShifted");
-
-    bgk1dMethod<ExplicitEulerRK>(data, Cell1stOrderInt, output, everyNthStepOutputRule(dt, 100));
-}
-
-void runEmittingWallTest() {
-    constexpr double tEnd = 10.0;
-    constexpr double dt = 0.001;
-
-    const auto data = emittingWallProblem<double>(
-        1.0, 1.0,
-        1.5, 2.0,
-        400, 12.5,
-        50, 6.0,
-        dt, tEnd,
-        100.0
+    const auto data = couetteProblem<double>(
+        41,
+        16,
+        0.0,
+        1.0,
+        4.0,
+        1.0,
+        1.0,
+        0.9,
+        0.5,
+        240,
+        1e-7
     );
 
-    const auto outputRule = everyNthStepOutputRule(dt, 100);
+    std::vector<double> convergenceHistory;
+    const ChannelState<double> state = solveSteadyChannelBGK(data, convergenceHistory);
+    writeChannelOutput(outputDir, data, state);
+    writeConvergenceHistory(outputDir, convergenceHistory);
 
-    Full1dStateOutput outputBall("output/bgk1d/testEmittingWallBall");
-    bgk1dMethod<ExplicitEulerRK>(data, Cell1stOrderInt, outputBall, outputRule, ballMoleculeViscosityRule);
-
-    Full1dStateOutput outputMaxwell("output/bgk1d/testEmittingWallMaxwell");
-    bgk1dMethod<ExplicitEulerRK>(data, Cell1stOrderInt, outputMaxwell, outputRule, maxwellMoleculeViscosityRule);
+    if (generatePlot) {
+        plotAndOpenChannelResults(outputDir);
+    }
 }
 
-void runEvaporatingWallTest() {
-    constexpr double tEnd = 5.0;
-    constexpr double dt = 0.0001;
+void runPoiseuilleCase(
+    int n_y = 41,
+    const std::filesystem::path& outputDir = "output/bgk_channel/poiseuille",
+    bool generatePlot = true
+) {
+    using namespace bgk_channel;
 
-    const int stepCount = static_cast<int>(std::lround((tEnd + 2 * dt) / dt));
-    const auto outputRule = everyNthStepOutputRule(dt, stepCount / 5);
-
-    const auto data = evaporatingWallProblem<double>(
-        1.0, 1.0,
-        2.0, 10.0,
-        300, 15.0,
-        100, 9.0,
-        dt, tEnd,
-        knToDelta(0.01)
+    const auto data = poiseuilleProblem<double>(
+        n_y,
+        16,
+        0.0,
+        1.0,
+        4.0,
+        1.0,
+        1.0,
+        0.35,
+        0.5,
+        240,
+        1e-7
     );
 
-    Full1dStateOutput output("output/bgk1d/testEvaporatingWallMaxwell4");
-    bgk1dMethod<ExplicitEulerRK>(data, simpsonInt, output, outputRule, maxwellMoleculeViscosityRule);
+    std::vector<double> convergenceHistory;
+    const ChannelState<double> state = solveSteadyChannelBGK(data, convergenceHistory);
+    writeChannelOutput(outputDir, data, state);
+    writeConvergenceHistory(outputDir, convergenceHistory);
+
+    if (generatePlot) {
+        plotAndOpenChannelResults(outputDir);
+    }
 }
 
-void runDensity10Test() {
-    const double tEnd = 0.2 * std::sqrt(2.0);
-    constexpr double dt = 0.00002;
+void runHeatConductionCase(
+    const std::filesystem::path& outputDir = "output/bgk_channel/heat_conduction",
+    bool generatePlot = true
+) {
+    using namespace bgk_channel;
 
-    const int stepCount = static_cast<int>(std::lround(tEnd / dt));
-    const auto outputRule = everyNthStepOutputRule(dt, stepCount / 100);
-
-    const auto data = densityRiemannProblem<double>(
-        1.0, 1.0, 0.125,
-        150 * 5, 0.0, 1.0, 45 * 8, 8.0,
-        dt, tEnd,
-        10000.0
+    const auto data = heatConductionProblem<double>(
+        41,
+        16,
+        0.0,
+        1.0,
+        4.0,
+        1.0,
+        0.5,
+        1.1,
+        0.5,
+        240,
+        1e-7
     );
 
-    Full1dStateOutput output("output/bgk1d/testDensity10Multiple");
-    bgk1dMethod<ExplicitEulerRK>(data, simpsonInt, output, outputRule);
+    std::vector<double> convergenceHistory;
+    const ChannelState<double> state = solveSteadyChannelBGK(data, convergenceHistory);
+    writeChannelOutput(outputDir, data, state);
+    writeConvergenceHistory(outputDir, convergenceHistory);
+
+    if (generatePlot) {
+        plotAndOpenChannelResults(outputDir);
+    }
 }
 
-void runSodTest() {
-    const double tEnd = 0.2 * std::sqrt(2.0);
-    constexpr double dt = 0.00002;
-
-    const int stepCount = static_cast<int>(std::lround(tEnd / dt));
-    const auto outputRule = everyNthStepOutputRule(dt, stepCount / 100);
-
-    const auto data = densityTemperatureRiemannProblem<double>(
-        1.0, 1.0,
-        0.8, 0.125,
-        150 * 3, 0.0, 1.0, 45 * 4, 8.0,
-        dt, tEnd,
-        10000.0
-    );
-
-    Full1dStateOutput output("output/bgk1d/SOD_1");
-    bgk1dMethod<ExplicitEulerRK>(data, simpsonInt, output, outputRule);
-}
-
-void runFullBoltzmannUniformEquilibriumTest(
-    int n_x = 33,
-    const std::filesystem::path& outputDir = "output/full_boltzmann_1d3v/uniform_equilibrium",
+void runFullCouetteCase(
+    const std::filesystem::path& outputDir = "output/full_boltzmann_1d3v/couette",
     bool generatePlot = true
 ) {
     using namespace full_boltzmann_1d3v;
 
-    constexpr double dt = 0.0025;
-    constexpr double tEnd = 0.02;
-
-    const auto data = uniformEquilibriumProblem<double>(
-        n_x,
-        5,      // n_v per axis => 125 velocity nodes
-        0.0, 1.0,
+    constexpr double dt = 0.002;
+    constexpr double tEnd = 0.04;
+    const auto data = couetteFlowProblem<double>(
+        31,
+        6,
+        0.0,
+        1.0,
         4.0,
-        dt, tEnd,
-        1.0,    // uniform density
-        0.8,    // uniform temperature
-        0.02
+        dt,
+        tEnd,
+        1.0,
+        1.0,
+        0.9,
+        0.01
     );
 
     MacroOutput1D3V<double> output(outputDir);
-    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 1));
+    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 5));
     output.close();
+
     if (generatePlot) {
-        plotAndOpenFullBoltzmannResults(outputDir);
+        runCouetteCase("output/bgk_channel/couette", false);
+        plotFullBoltzmannResults("couette", outputDir);
     }
 }
 
-void runFullBoltzmannCouetteTest() {
-    using namespace linearized_bgk_channel;
-
-    CouetteProblemData<double> data;
-    data.n_y = 41;
-    data.y_min = 0.0;
-    data.y_max = 1.0;
-    data.velocity_grid = VelocityGrid3D<double>(11, 3.5);
-    data.wall_density = 1.0;
-    data.wall_temperature = 1.0;
-    data.wall_speed = 0.9;
-    data.tau = 0.5;
-    data.max_iterations = 120;
-    data.tolerance = 1e-7;
-
-    const ChannelState<double> state = solveCouetteSteadyState(data);
-    const std::filesystem::path outputDir = "output/linearized_bgk_channel/couette";
-    writeCouetteOutput(outputDir, data, state);
-    plotAndOpenChannelCouetteResults(outputDir);
-}
-
-void runFullBoltzmannPoiseuilleTest(
-    int n_x = 33,
+void runFullPoiseuilleCase(
     const std::filesystem::path& outputDir = "output/full_boltzmann_1d3v/poiseuille",
     bool generatePlot = true
 ) {
     using namespace full_boltzmann_1d3v;
 
-    constexpr double dt = 0.0025;
-    constexpr double tEnd = 0.03;
-
+    constexpr double dt = 0.002;
+    constexpr double tEnd = 0.04;
     const auto data = poiseuilleFlowProblem<double>(
-        n_x,
-        5,
-        0.0, 1.0,
-        4.0,
-        dt, tEnd,
+        31,
+        6,
+        0.0,
         1.0,
-        0.8,
+        4.0,
+        dt,
+        tEnd,
+        1.0,
+        1.0,
         0.12,
-        0.02
+        0.01
     );
 
     MacroOutput1D3V<double> output(outputDir);
-    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 1));
+    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 5));
     output.close();
+
     if (generatePlot) {
-        plotAndOpenFullBoltzmannResults(outputDir);
+        runPoiseuilleCase(41, "output/bgk_channel/poiseuille", false);
+        plotFullBoltzmannResults("poiseuille", outputDir);
     }
 }
 
-void runFullBoltzmannHeatConductionTest() {
+void runFullHeatConductionCase(
+    const std::filesystem::path& outputDir = "output/full_boltzmann_1d3v/heat_conduction",
+    bool generatePlot = true
+) {
     using namespace full_boltzmann_1d3v;
 
-    constexpr double dt = 0.0025;
-    constexpr double tEnd = 0.03;
-
+    constexpr double dt = 0.002;
+    constexpr double tEnd = 0.04;
     const auto data = heatConductionProblem<double>(
-        33,
-        5,
-        0.0, 1.0,
+        31,
+        6,
+        0.0,
+        1.0,
         4.0,
-        dt, tEnd,
+        dt,
+        tEnd,
         1.0,
         0.5,
         1.1,
-        0.02
+        0.01
     );
 
-    const std::filesystem::path outputDir = "output/full_boltzmann_1d3v/heat_conduction";
     MacroOutput1D3V<double> output(outputDir);
-    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 1));
+    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 5));
     output.close();
-    plotAndOpenFullBoltzmannResults(outputDir);
-}
 
-void runFullBoltzmannBoundaryScenario(Scenario scenario) {
-    switch (scenario) {
-    case Scenario::FullBoltzmannCouette:
-        runFullBoltzmannCouetteTest();
-        break;
-    case Scenario::FullBoltzmannPoiseuille:
-        runFullBoltzmannPoiseuilleTest();
-        break;
-    case Scenario::FullBoltzmannHeatConduction:
-        runFullBoltzmannHeatConductionTest();
-        break;
-    case Scenario::FullBoltzmannUniformEquilibrium:
-        runFullBoltzmannUniformEquilibriumTest();
-        break;
-    default:
-        break;
+    if (generatePlot) {
+        runHeatConductionCase("output/bgk_channel/heat_conduction", false);
+        plotFullBoltzmannResults("heat_conduction", outputDir);
     }
 }
 
 void runScenario(Scenario scenario) {
     switch (scenario) {
-    case Scenario::FullBoltzmannCouette:
-    case Scenario::FullBoltzmannPoiseuille:
-    case Scenario::FullBoltzmannHeatConduction:
-    case Scenario::FullBoltzmannUniformEquilibrium:
-        runFullBoltzmannBoundaryScenario(scenario);
+    case Scenario::Couette:
+        runCouetteCase();
         break;
-    case Scenario::Sod:
-        runSodTest();
+    case Scenario::Poiseuille:
+        runPoiseuilleCase();
         break;
-    case Scenario::Density10:
-        runDensity10Test();
+    case Scenario::HeatConduction:
+        runHeatConductionCase();
         break;
-    case Scenario::StudentSpringDensity:
-        runStudentSpringDensityTest();
+    case Scenario::FullCouette:
+        runFullCouetteCase();
         break;
-    case Scenario::FreeMoleculeDensity:
-        runFreeMoleculeDensityTest();
+    case Scenario::FullPoiseuille:
+        runFullPoiseuilleCase();
         break;
-    case Scenario::EmittingWall:
-        runEmittingWallTest();
-        break;
-    case Scenario::EvaporatingWall:
-        runEvaporatingWallTest();
+    case Scenario::FullHeatConduction:
+        runFullHeatConductionCase();
         break;
     }
 }
@@ -363,51 +309,95 @@ int main(int argc, char* argv[]) {
     if (argc >= 2) {
         const std::string_view mode(argv[1]);
         if (mode == "couette") {
-            runFullBoltzmannCouetteTest();
+            std::filesystem::path outputDir = "output/bgk_channel/couette";
+            bool generatePlot = true;
+
+            if (argc >= 3) {
+                outputDir = argv[2];
+            }
+            if (argc >= 4 && std::string_view(argv[3]) == "--no-plot") {
+                generatePlot = false;
+            }
+
+            runCouetteCase(outputDir, generatePlot);
             return EXIT_SUCCESS;
         }
         if (mode == "poiseuille") {
-            int n_x = 33;
+            int n_y = 41;
+            std::filesystem::path outputDir = "output/bgk_channel/poiseuille";
+            bool generatePlot = true;
+
+            if (argc >= 3) {
+                n_y = std::stoi(argv[2]);
+            }
+            if (argc >= 4) {
+                outputDir = argv[3];
+            }
+            if (argc >= 5 && std::string_view(argv[4]) == "--no-plot") {
+                generatePlot = false;
+            }
+
+            runPoiseuilleCase(n_y, outputDir, generatePlot);
+            return EXIT_SUCCESS;
+        }
+        if (mode == "heat-conduction") {
+            std::filesystem::path outputDir = "output/bgk_channel/heat_conduction";
+            bool generatePlot = true;
+
+            if (argc >= 3) {
+                outputDir = argv[2];
+            }
+            if (argc >= 4 && std::string_view(argv[3]) == "--no-plot") {
+                generatePlot = false;
+            }
+
+            runHeatConductionCase(outputDir, generatePlot);
+            return EXIT_SUCCESS;
+        }
+        if (mode == "full-couette") {
+            std::filesystem::path outputDir = "output/full_boltzmann_1d3v/couette";
+            bool generatePlot = true;
+
+            if (argc >= 3) {
+                outputDir = argv[2];
+            }
+            if (argc >= 4 && std::string_view(argv[3]) == "--no-plot") {
+                generatePlot = false;
+            }
+
+            runFullCouetteCase(outputDir, generatePlot);
+            return EXIT_SUCCESS;
+        }
+        if (mode == "full-poiseuille") {
             std::filesystem::path outputDir = "output/full_boltzmann_1d3v/poiseuille";
             bool generatePlot = true;
 
             if (argc >= 3) {
-                n_x = std::stoi(argv[2]);
+                outputDir = argv[2];
             }
-            if (argc >= 4) {
-                outputDir = argv[3];
-            }
-            if (argc >= 5 && std::string_view(argv[4]) == "--no-plot") {
+            if (argc >= 4 && std::string_view(argv[3]) == "--no-plot") {
                 generatePlot = false;
             }
 
-            runFullBoltzmannPoiseuilleTest(n_x, outputDir, generatePlot);
+            runFullPoiseuilleCase(outputDir, generatePlot);
             return EXIT_SUCCESS;
         }
-        if (mode == "heat-conduction") {
-            runFullBoltzmannHeatConductionTest();
-            return EXIT_SUCCESS;
-        }
-        if (mode == "uniform-equilibrium") {
-            int n_x = 33;
-            std::filesystem::path outputDir = "output/full_boltzmann_1d3v/uniform_equilibrium";
+        if (mode == "full-heat-conduction") {
+            std::filesystem::path outputDir = "output/full_boltzmann_1d3v/heat_conduction";
             bool generatePlot = true;
 
             if (argc >= 3) {
-                n_x = std::stoi(argv[2]);
+                outputDir = argv[2];
             }
-            if (argc >= 4) {
-                outputDir = argv[3];
-            }
-            if (argc >= 5 && std::string_view(argv[4]) == "--no-plot") {
+            if (argc >= 4 && std::string_view(argv[3]) == "--no-plot") {
                 generatePlot = false;
             }
 
-            runFullBoltzmannUniformEquilibriumTest(n_x, outputDir, generatePlot);
+            runFullHeatConductionCase(outputDir, generatePlot);
             return EXIT_SUCCESS;
         }
     }
 
-    runScenario(Scenario::FullBoltzmannCouette);
+    runScenario(Scenario::Couette);
     return EXIT_SUCCESS;
 }

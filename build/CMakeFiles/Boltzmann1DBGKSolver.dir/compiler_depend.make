@@ -1993,17 +1993,10 @@ CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/solver/main.cpp.o: /User
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include/stdarg.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include/stdint.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/interface/MacroparametersFileInterface.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/BoltzmannEq1DProblems.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/BoltzmannEq1DSolvers.h \
+  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/BGKChannel1D.h \
   /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/FullBoltzmann1D3V.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/LinearizedBGKChannel1D.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/Mkt.h \
   /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/AdditionalMath.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Integration.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Norma.h \
   /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/OpenMpCompat.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/VectorOperations.h \
   /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/rkMethods.h
 
 CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.o: /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Norma.cpp \
@@ -2908,25 +2901,13 @@ CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.o: /User
   /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Norma.h
 
 
-/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Norma.cpp:
-
-/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/VectorOperations.h:
-
 /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Norma.h:
+
+/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Norma.cpp:
 
 /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/AdditionalMath.h:
 
-/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/Mkt.h:
-
-/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/LinearizedBGKChannel1D.h:
-
 /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/FullBoltzmann1D3V.h:
-
-/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/BoltzmannEq1DSolvers.h:
-
-/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/BoltzmannEq1DProblems.h:
-
-/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/interface/MacroparametersFileInterface.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/fstream:
 
@@ -3401,6 +3382,8 @@ CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.o: /User
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/__type_traits/detected_or.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/__type_traits/copy_cvref.h:
+
+/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/BGKChannel1D.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/__type_traits/copy_cv.h:
 
@@ -4871,8 +4854,6 @@ CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.o: /User
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/__debug_utils/strict_weak_ordering_check.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/__compare/strong_order.h:
-
-/Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Integration.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/__type_traits/is_reference_wrapper.h:
 

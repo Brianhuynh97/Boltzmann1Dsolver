@@ -26,15 +26,6 @@ Boltzmann1DBGKSolver_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Boltzmann1DBGKSolver_SOURCE_DIR:STATIC=/Users/brianhuynh/Boltzmann 1D Solver
 
-//Value Computed by CMake
-Boltzmann1DSolver_BINARY_DIR:STATIC=/Users/brianhuynh/Boltzmann 1D Solver/build
-
-//Value Computed by CMake
-Boltzmann1DSolver_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-Boltzmann1DSolver_SOURCE_DIR:STATIC=/Users/brianhuynh/Boltzmann 1D Solver
-
 //Path to a program.
 CMAKE_ADDR2LINE:FILEPATH=CMAKE_ADDR2LINE-NOTFOUND
 

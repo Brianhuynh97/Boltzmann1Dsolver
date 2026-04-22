@@ -6,7 +6,5 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I"/Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/include" -I"/Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/interface" -I"/Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/solver" -I"/Users/brianhuynh/Boltzmann 1D Solver/Boltzmann_1D_Solver/utils"
 
-CXX_FLAGSarm64 = -std=c++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk -mmacosx-version-min=26.3 -Wall -Wextra -Wpedantic
-
-CXX_FLAGS = -std=c++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk -mmacosx-version-min=26.3 -Wall -Wextra -Wpedantic
+CXX_FLAGS = -std=c++20 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk -mmacosx-version-min=26.3 -Wall -Wextra -Wpedantic
 

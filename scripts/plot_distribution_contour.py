@@ -48,22 +48,33 @@ def main() -> int:
 
     vmin = min(float(field.min()) for _, field in fields)
     vmax = max(float(field.max()) for _, field in fields)
-    amplitude = max(abs(vmin), abs(vmax))
-    if np.isclose(amplitude, 0.0):
-        amplitude = 1e-12
+    is_perturbation = vmin < 0.0 and vmax > 0.0
 
-    levels = np.linspace(-amplitude, amplitude, 15)
+    if is_perturbation:
+        amplitude = max(abs(vmin), abs(vmax))
+        if np.isclose(amplitude, 0.0):
+            amplitude = 1e-12
+        levels = np.linspace(-amplitude, amplitude, 15)
+        cmap = "coolwarm"
+        colorbar_label = "f(v_x, v_y, v_z = 0) - f_0"
+    else:
+        if np.isclose(vmin, vmax):
+            vmax = vmin + 1e-12
+        levels = np.linspace(vmin, vmax, 15)
+        cmap = "viridis"
+        colorbar_label = "f(v_x, v_y, v_z = 0)"
+
     fig, axes = plt.subplots(1, 3, figsize=(13, 4.2), constrained_layout=True)
 
     for ax, (title, field) in zip(axes, fields):
-        contour = ax.contourf(vx, vy, field, levels=levels, cmap="coolwarm", extend="both")
+        contour = ax.contourf(vx, vy, field, levels=levels, cmap=cmap, extend="both")
         ax.contour(vx, vy, field, levels=levels, colors="black", linewidths=0.5, alpha=0.45)
         ax.set_title(title)
         ax.set_xlabel("v_x")
         ax.set_ylabel("v_y")
         ax.set_aspect("equal")
 
-    fig.colorbar(contour, ax=axes, shrink=0.88, label="f(v_x, v_y, v_z = 0) - f_0")
+    fig.colorbar(contour, ax=axes, shrink=0.88, label=colorbar_label)
     fig.suptitle(f"Velocity-Space Distribution Slices at {time_label}")
 
     out = output_dir / "distribution_contour.png"

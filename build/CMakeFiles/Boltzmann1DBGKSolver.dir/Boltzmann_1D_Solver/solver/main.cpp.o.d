@@ -995,21 +995,14 @@ CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/solver/main.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/__filesystem/path_iterator.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/__filesystem/u8path.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/fstream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/iostream \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/BoltzmannEq1DProblems.h \
+  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/BGKChannel1D.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/cassert \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/_assert.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/_static_assert.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/BoltzmannEq1DSolvers.h \
   /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/AdditionalMath.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Norma.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/OpenMpCompat.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/rkMethods.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/VectorOperations.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/Integration.h \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/interface/MacroparametersFileInterface.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/fstream \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/Mkt.h \
   /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/FullBoltzmann1D3V.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1/cassert \
-  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/solver/LinearizedBGKChannel1D.h
+  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/OpenMpCompat.h \
+  /Users/brianhuynh/Boltzmann\ 1D\ Solver/Boltzmann_1D_Solver/utils/rkMethods.h

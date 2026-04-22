@@ -3,27 +3,27 @@
 #include <vector>
 #include <utility>
 #include <cmath>
-//#include "QuadMatrix.h"
+// #include "QuadMatrix.h"
 
-// Т®ѓл дг≠™ж®© ≠Ѓађ §Ђп Ґ•™вЃаЃҐ ® ђ ва®ж бЃЃвҐ•вбвҐ•≠≠Ѓ
+template <typename T>
+using vectorNorm = T (*)(const std::vector<T> &);
 
-template<typename T>
-using vectorNorm = T (*)(const std::vector<T>&);
-
-template<class T>
+template <class T>
 class QuadMatrix;
 
-template<typename T>
-using matrixNorm = T (*)(const QuadMatrix<T>&);
+template <typename T>
+using matrixNorm = T (*)(const QuadMatrix<T> &);
 
-// убическа  норма дл  вектора и матрицы
 template <class T>
-T norm_inf(const std::vector<T>& x) {
+T norm_inf(const std::vector<T> &x)
+{
     size_t n = x.size();
     T xMax = 0;
 
-    for (int i = 0; i < n; ++i) {
-        if (fabs(x[i]) > xMax) {
+    for (int i = 0; i < n; ++i)
+    {
+        if (fabs(x[i]) > xMax)
+        {
             xMax = fabs(x[i]);
         }
     }
@@ -49,12 +49,13 @@ Type norm_inf(const QuadMatrix<Type>& A) {
 }
 */
 
-//ќктаэдральна  норма дл  вектора и матрицы
-template<class T>
-T norm_1(const std::vector<T>& x) {
+template <class T>
+T norm_1(const std::vector<T> &x)
+{
     size_t n = x.size();
     T xSum = 0;
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i)
+    {
         xSum += fabs(x[i]);
     }
     return xSum;
@@ -78,19 +79,18 @@ Type norm_1(const QuadMatrix<Type>& A) {
 }
 */
 
-//Ўарова  норма дл  вектора и матрицы(норма ‘робениуса)
-//template<class Type>
-//Type norm_2(vector<Type> x) {
+// template<class Type>
+// Type norm_2(vector<Type> x) {
 //	size_t n = x.size();
 //	Type xSum = 0;
 //	for (int i = 0; i < n; ++i) {
 //		xSum += x[i] * x[i];
 //	}
 //	return sqrt(xSum);
-//}
-//Ёто не точно
-//template<class Type>
-//Type norm_F(QuadMatrix<Type> A) {
+// }
+
+// template<class Type>
+// Type norm_F(QuadMatrix<Type> A) {
 //	size_t n = A.order();
 //	Type aSum = 0;
 //	for (int i = 0; i < n; ++i) {
@@ -99,4 +99,4 @@ Type norm_1(const QuadMatrix<Type>& A) {
 //		}
 //	}
 //	return sqrt(aSum);
-//}
+// }
