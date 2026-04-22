@@ -167,24 +167,7 @@ Each case writes files such as:
 - `distribution_right.txt`: upper-wall velocity-space slice
 - `convergence_history.txt`: steady-solver residual by iteration
 
-## Plotting Scripts
-
-Available scripts:
-
-- `scripts/plot_bgk_channel.py`
-  creates `channel_profile.png`
-- `scripts/plot_distribution_contour.py`
-  creates `distribution_contour.png`
-- `scripts/plot_three_case_convergence.py`
-  creates `output/three_case_convergence.png`
-- `scripts/plot_three_case_heatmaps.py`
-  creates a presentation-style three-case heatmap from macro profiles
-- `scripts/plot_distribution_vs_maxwellian.py`
-  compares wall/center distribution slices with a Maxwellian
-- `scripts/plot_bgk_full_comparison.py`
-  overlays BGK and full-Boltzmann macro profiles
-
-Example:
+## Plotting 
 
 ```bash
 python3 scripts/plot_bgk_channel.py output/bgk_channel/couette
@@ -192,16 +175,6 @@ python3 scripts/plot_distribution_contour.py output/bgk_channel/couette
 python3 scripts/plot_three_case_convergence.py
 python3 scripts/plot_bgk_full_comparison.py couette output/bgk_channel/couette output/full_boltzmann_1d3v/couette
 ```
-
-## Legacy Code
-
-The repository still contains older solver infrastructure:
-
-- `BoltzmannEq1DSolvers.h`
-- `BoltzmannEq1DProblems.h`
-
-Those files are kept as reference/experimental infrastructure, but they are no longer the active public run path for the three documented cases.
-
 ## Current Limitations
 
 This is a compact educational/research code, not a validated production solver.
