@@ -3,17 +3,15 @@
 ###############################################################################
 * text=auto
 
-# Ignore build system + generated files
+*.cpp linguist-language=C++
+*.h linguist-language=C++
+
 build/** linguist-vendored
 output/** linguist-vendored
 Boltzmann_1D_Solver/output/** linguist-vendored
+scripts/** linguist-vendored
 
-# Ignore Makefiles everywhere
 **/Makefile linguist-vendored
-
-# Ignore generated text data
-*.txt linguist-vendored
-*.png linguist-vendored
 
 ###############################################################################
 # Set default behavior for command prompt diff.
