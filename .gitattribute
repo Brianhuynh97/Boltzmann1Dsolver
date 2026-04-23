@@ -3,9 +3,17 @@
 ###############################################################################
 * text=auto
 
-Makefile linguist-vendored
-*.txt linguist-vendored
+# Ignore build system + generated files
+build/** linguist-vendored
 output/** linguist-vendored
+Boltzmann_1D_Solver/output/** linguist-vendored
+
+# Ignore Makefiles everywhere
+**/Makefile linguist-vendored
+
+# Ignore generated text data
+*.txt linguist-vendored
+*.png linguist-vendored
 
 ###############################################################################
 # Set default behavior for command prompt diff.
