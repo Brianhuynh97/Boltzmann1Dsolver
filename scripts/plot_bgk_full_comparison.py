@@ -107,9 +107,9 @@ def main() -> int:
         ax.grid(True, alpha=0.3)
         ax.legend(frameon=False)
 
-    fig.suptitle("Qualitative BGK/full-Boltzmann diagnostic, not calibrated validation", fontsize=11)
+    fig.suptitle("Qualitative BGK/full-Boltzmann comparison, not calibrated validation", fontsize=11)
 
-    out = full_dir / "bgk_full_diagnostic.png"
+    out = full_dir / "bgk_full_comparison.png"
     fig.savefig(out, dpi=160)
     print(out)
     return 0

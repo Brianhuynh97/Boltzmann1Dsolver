@@ -64,9 +64,7 @@ Useful generated plots:
 - `distribution_contour.png`
 - `output/three_case_convergence.png`
 
-## Active Solver
-
-The main solver is a steady `1D_y-3D_v` BGK channel model.
+##  Solver
 
 It uses:
 
@@ -93,7 +91,7 @@ The solver performs directional sweeps through the channel:
 
 ## Full-Boltzmann Comparison Solver
 
-The optional full-Boltzmann comparison solver is an explicit `1D_x-3D_v` kinetic model.
+The full-Boltzmann comparison solver is an explicit `1D_x-3D_v` kinetic model.
 
 It uses:
 

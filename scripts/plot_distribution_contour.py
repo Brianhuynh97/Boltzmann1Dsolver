@@ -75,7 +75,7 @@ def main() -> int:
         ax.set_aspect("equal")
 
     fig.colorbar(contour, ax=axes, shrink=0.88, label=colorbar_label)
-    fig.suptitle(f"Velocity-Space Distribution Slices at {time_label}")
+    fig.suptitle("Velocity space distribution")
 
     out = output_dir / "distribution_contour.png"
     fig.savefig(out, dpi=160)
