@@ -189,10 +189,10 @@ void runFullCouetteCase(
     using namespace full_boltzmann_1d3v;
 
     constexpr double dt = 0.002;
-    constexpr double tEnd = 0.04;
+    constexpr double tEnd = 0.6;
     const auto data = couetteFlowProblem<double>(
         31,
-        6,
+        4,
         0.0,
         1.0,
         4.0,
@@ -205,7 +205,7 @@ void runFullCouetteCase(
     );
 
     MacroOutput1D3V<double> output(outputDir);
-    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 5));
+    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 25));
     output.close();
 
     if (generatePlot) {
@@ -221,10 +221,10 @@ void runFullPoiseuilleCase(
     using namespace full_boltzmann_1d3v;
 
     constexpr double dt = 0.002;
-    constexpr double tEnd = 0.04;
+    constexpr double tEnd = 0.6;
     const auto data = poiseuilleFlowProblem<double>(
         31,
-        6,
+        4,
         0.0,
         1.0,
         4.0,
@@ -237,7 +237,7 @@ void runFullPoiseuilleCase(
     );
 
     MacroOutput1D3V<double> output(outputDir);
-    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 5));
+    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 25));
     output.close();
 
     if (generatePlot) {
@@ -253,10 +253,10 @@ void runFullHeatConductionCase(
     using namespace full_boltzmann_1d3v;
 
     constexpr double dt = 0.002;
-    constexpr double tEnd = 0.04;
+    constexpr double tEnd = 0.6;
     const auto data = heatConductionProblem<double>(
         31,
-        6,
+        4,
         0.0,
         1.0,
         4.0,
@@ -269,7 +269,7 @@ void runFullHeatConductionCase(
     );
 
     MacroOutput1D3V<double> output(outputDir);
-    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 5));
+    fullBoltzmannMethod<ExplicitEulerRK>(data, output, everyNthStepOutputRule(dt, 25));
     output.close();
 
     if (generatePlot) {

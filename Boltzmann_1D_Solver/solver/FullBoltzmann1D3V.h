@@ -811,7 +811,9 @@ namespace full_boltzmann_1d3v
         const OutputRule &output_rule)
     {
         DistributionState1D3V<T> state = data.initial_state;
+        std::ofstream residual_output(output.outputFolder() / "convergence_history.txt");
         T final_time = T{};
+        int step_index = 0;
 
         for (T t{}; t < data.t_end; t += data.dt)
         {
@@ -821,7 +823,7 @@ namespace full_boltzmann_1d3v
             }
 
             const T step = std::min(data.dt, data.t_end - t);
-            state = RkMethod::stepY(
+            DistributionState1D3V<T> next_state = RkMethod::stepY(
                 [&data](const DistributionState1D3V<T> &current_state)
                 {
                     return fullBoltzmannRightHandSide(data, current_state);
@@ -829,14 +831,25 @@ namespace full_boltzmann_1d3v
                 state,
                 step);
 
-            for (T &value : state.values)
+            T change_norm_squared{};
+            T previous_norm_squared{};
+            for (std::size_t i = 0; i < next_state.values.size(); ++i)
             {
-                value = std::max(value, T(0));
+                next_state.values[i] = std::max(next_state.values[i], T(0));
+                const T change = next_state.values[i] - state.values[i];
+                change_norm_squared += change * change;
+                previous_norm_squared += state.values[i] * state.values[i];
             }
 
+            const T residual = std::sqrt(change_norm_squared / std::max(previous_norm_squared, T(1e-30)));
+            residual_output << step_index << ' ' << residual << '\n';
+
+            state = std::move(next_state);
             final_time = t + step;
+            ++step_index;
         }
 
+        residual_output.close();
         output.print(final_time, computeMacroState(state, data.velocity_grid));
         writeDistributionSlices(output.outputFolder(), state, data.velocity_grid, final_time);
     }
