@@ -3,6 +3,10 @@
 ###############################################################################
 * text=auto
 
+Makefile linguist-vendored
+*.txt linguist-vendored
+output/** linguist-vendored
+
 ###############################################################################
 # Set default behavior for command prompt diff.
 #
