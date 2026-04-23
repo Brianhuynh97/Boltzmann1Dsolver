@@ -21,9 +21,8 @@ def load_channel_residual(case_dir: Path) -> tuple[np.ndarray, np.ndarray]:
         history = history.reshape(1, -1)
 
     iterations = history[:, 0]
-    residual = history[:, 1]
-    scale = max(float(residual[0]), 1e-12)
-    return iterations, residual / scale
+    residual = np.maximum(history[:, 1], 1e-16)
+    return iterations, residual
 
 
 def main() -> int:

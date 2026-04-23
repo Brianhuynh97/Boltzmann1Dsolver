@@ -494,7 +494,8 @@ namespace bgk_channel
                 }
             }
 
-            T max_change{};
+            T change_norm_squared{};
+            T previous_norm_squared{};
             for (std::size_t i = 0; i < state.values.size(); ++i)
             {
                 T candidate = (T(1) - data.relaxation) * state.values[i] + data.relaxation * next.values[i];
@@ -503,13 +504,16 @@ namespace bgk_channel
                     candidate = state.values[i];
                 }
 
-                max_change = std::max(max_change, std::abs(candidate - state.values[i]));
+                const T change = candidate - state.values[i];
+                change_norm_squared += change * change;
+                previous_norm_squared += state.values[i] * state.values[i];
                 next.values[i] = candidate;
             }
 
-            convergence_history.push_back(max_change);
+            const T residual = std::sqrt(change_norm_squared / std::max(previous_norm_squared, T(1e-30)));
+            convergence_history.push_back(residual);
             state = std::move(next);
-            if (max_change < data.tolerance)
+            if (residual < data.tolerance)
             {
                 break;
             }

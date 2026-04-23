@@ -62,7 +62,7 @@ def main() -> int:
 
     full_temperature = load_profile(full_dir / "temperature.txt")
 
-    full_velocity = load_profile(full_dir / "bulk_vx.txt")
+    full_velocity = load_profile(full_dir / "bulk_vy.txt")
 
     x = normalized_axis(bgk_temperature.size)
     full_temperature_i = interpolate_to(x, full_temperature)
@@ -80,14 +80,14 @@ def main() -> int:
             "Poiseuille velocity shape",
             normalized(bgk_velocity),
             normalized(full_velocity_i),
-            "u_x / max|u_x|",
+            "stream velocity / max",
         )
     else:
         first_panel = (
             "Couette velocity shape",
             normalized(bgk_velocity),
             normalized(full_velocity_i),
-            "u_x / max|u_x|",
+            "stream velocity / max",
         )
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 4), constrained_layout=True)
