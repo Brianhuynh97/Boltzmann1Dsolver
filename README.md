@@ -184,8 +184,8 @@ This is a compact educational/research code, not a validated production solver.
 
 Current limitations:
 
-- the main channel solver uses a BGK approximation, not the full collision operator `Q(f,f)`
-- the full-Boltzmann solver is coarse and explicit, so it is useful for comparison but not a validated production solver
-- the channel discretization is simplified
-- results are qualitative and should be validated before making physical claims
-- velocity-space contour plots are diagnostic visualizations, not exact reproductions of published benchmark figures
+- The main channel solver uses a BGK approximation, not the full collision operator `Q(f,f)`
+- The full-Boltzmann solver is coarse and explicit, so it is useful for comparison but not a validated production solver
+- The channel discretization is simplified
+
+
