@@ -533,7 +533,7 @@ namespace full_boltzmann_1d3v
         T t_end,
         T wall_density,
         T wall_temperature,
-        T wall_speed_y,
+        T wall_speed_x,
         T cross_section)
     {
         ProblemData1D3V<T> data;
@@ -546,8 +546,8 @@ namespace full_boltzmann_1d3v
         data.initial_state = DistributionState1D3V<T>(n_x, data.velocity_grid.size());
         data.collision_model = HardSphereCollisionModel<T>(cross_section);
 
-        data.left_wall = {true, wall_density, wall_temperature, {T(0), T(0.5) * wall_speed_y, T(0)}, {}};
-        data.right_wall = {true, wall_density, wall_temperature, {T(0), -T(0.5) * wall_speed_y, T(0)}, {}};
+        data.left_wall = {true, wall_density, wall_temperature, {T(0.5) * wall_speed_x, T(0), T(0)}, {}};
+        data.right_wall = {true, wall_density, wall_temperature, {-T(0.5) * wall_speed_x, T(0), T(0)}, {}};
         initializeWallMaxwellian(data.left_wall, data.velocity_grid);
         initializeWallMaxwellian(data.right_wall, data.velocity_grid);
 
@@ -556,7 +556,7 @@ namespace full_boltzmann_1d3v
         {
             const T x = x_left + (T(x_i) + T(0.5)) * dx;
             const T alpha = (x - x_left) / (x_right - x_left);
-            const Vec3<T> bulk_velocity{T(0), (T(0.5) - alpha) * wall_speed_y, T(0)};
+            const Vec3<T> bulk_velocity{(T(0.5) - alpha) * wall_speed_x, T(0), T(0)};
             const auto cell_values = maxwellianCell(data.velocity_grid, wall_density, bulk_velocity, wall_temperature);
             for (int v_i = 0; v_i < data.velocity_grid.size(); ++v_i)
             {
@@ -578,7 +578,7 @@ namespace full_boltzmann_1d3v
         T t_end,
         T density,
         T wall_temperature,
-        T body_force_y,
+        T body_force_x,
         T cross_section)
     {
         auto data = uniformEquilibriumProblem<T>(
@@ -586,7 +586,7 @@ namespace full_boltzmann_1d3v
 
         data.left_wall = {true, density, wall_temperature, {T(0), T(0), T(0)}, {}};
         data.right_wall = {true, density, wall_temperature, {T(0), T(0), T(0)}, {}};
-        data.body_force = {T(0), body_force_y, T(0)};
+        data.body_force = {body_force_x, T(0), T(0)};
         initializeWallMaxwellian(data.left_wall, data.velocity_grid);
         initializeWallMaxwellian(data.right_wall, data.velocity_grid);
 
@@ -710,7 +710,7 @@ namespace full_boltzmann_1d3v
 
             for (int k = 0; k < grid.size(); ++k)
             {
-                const T normal_velocity = grid.velocities[k].x;
+                const T normal_velocity = grid.velocities[k].y;
 
                 if (lower_wall)
                 {
@@ -759,7 +759,7 @@ namespace full_boltzmann_1d3v
 
             for (int v_i = 0; v_i < state.n_v; ++v_i)
             {
-                const T normal_velocity = data.velocity_grid.velocities[v_i].x;
+                const T normal_velocity = data.velocity_grid.velocities[v_i].y;
                 const int left_cell = (x_i == 0) ? 0 : x_i - 1;
                 const int right_cell = (x_i == state.n_x - 1) ? state.n_x - 1 : x_i + 1;
 

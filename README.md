@@ -103,9 +103,8 @@ It uses:
 
 Axis convention note:
 
-- in the BGK channel solver, the wall-normal direction is `y` and the flow direction is `x`
-- in the full-Boltzmann comparison solver, the wall-normal direction is `x` and the flow direction used in the default Couette/Poiseuille setups is `y`
-- because of that, full-Boltzmann Couette/Poiseuille runs store the main flow profile in `bulk_vy.txt`, while `bulk_vx.txt` remains near zero
+- both the BGK channel solver and the full-Boltzmann comparison solver use `y` as the wall-normal direction and `x` as the flow direction in the default Couette/Poiseuille setups
+- because of that, the main Couette/Poiseuille flow profile is written to `bulk_vx.txt`
 
 The collision operator is a direct discrete approximation to gain/loss collisions over velocity pairs and a small set of scattering directions. It is much more expensive than BGK, so the default full-Boltzmann runs use smaller grids and shorter times.
 
@@ -127,7 +126,7 @@ Implementation:
 Main output quantity:
 
 - BGK solver: streamwise velocity `bulk_vx.txt`
-- full-Boltzmann comparison solver: flow-direction velocity `bulk_vy.txt`
+- full-Boltzmann comparison solver: flow-direction velocity `bulk_vx.txt`
 
 ### Poiseuille
 
@@ -142,7 +141,7 @@ Implementation:
 Main output quantity:
 
 - BGK solver: streamwise velocity `bulk_vx.txt`
-- full-Boltzmann comparison solver: flow-direction velocity `bulk_vy.txt`
+- full-Boltzmann comparison solver: flow-direction velocity `bulk_vx.txt`
 
 ### Heat Conduction
 
@@ -164,8 +163,8 @@ Each case writes files such as:
 
 - `y_cells.txt`: wall-normal grid
 - `density.txt`: density profile
-- `bulk_vx.txt`: BGK streamwise velocity profile; for full-Boltzmann runs this is near zero because `x` is wall-normal
-- `bulk_vy.txt`: BGK zero placeholder; for full-Boltzmann Couette/Poiseuille runs this carries the flow-direction velocity profile
+- `bulk_vx.txt`: streamwise velocity profile for both BGK and full-Boltzmann runs
+- `bulk_vy.txt`: transverse velocity profile; this is typically near zero in the default channel cases
 - `temperature.txt`: temperature profile
 - `velocity_axis.txt`: velocity-grid axis used for contours
 - `distribution_left.txt`: lower-wall velocity-space slice

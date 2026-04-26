@@ -39,8 +39,8 @@ def main() -> int:
     fig, axes = plt.subplots(2, 2, figsize=(12, 8), constrained_layout=True)
     fields = [
         ("Density", density, "rho"),
-        ("Bulk velocity x", bulk_vx, "u_x"),
-        ("Bulk velocity y", bulk_vy, "u_y"),
+        ("Streamwise velocity", bulk_vx, "u_x"),
+        ("Wall-normal velocity", bulk_vy, "u_y"),
         ("Temperature", temperature, "T"),
     ]
 

@@ -50,10 +50,10 @@ def main() -> int:
     fig, axes = plt.subplots(3, 1, figsize=(10, 6.2), constrained_layout=True)
 
     for ax, (title, image, cmap) in zip(axes, panels):
-        ax.imshow(image, origin="lower", aspect="auto", cmap=cmap, interpolation="bicubic")
-        ax.set_xticks([])
-        ax.set_yticks([])
+        mesh = ax.imshow(image, origin="lower", aspect="auto", cmap=cmap, interpolation="bicubic")
+        ax.set_ylabel("wall-normal cell index")
         ax.set_title(title, fontsize=11, pad=8)
+        fig.colorbar(mesh, ax=ax, orientation="vertical", pad=0.012, shrink=0.92)
         for spine in ax.spines.values():
             spine.set_linewidth(0.8)
             spine.set_color("0.85")

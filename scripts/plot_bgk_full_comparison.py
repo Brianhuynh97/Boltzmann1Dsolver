@@ -62,7 +62,7 @@ def main() -> int:
 
     full_temperature = load_profile(full_dir / "temperature.txt")
 
-    full_velocity = load_profile(full_dir / "bulk_vy.txt")
+    full_velocity = load_profile(full_dir / "bulk_vx.txt")
 
     x = normalized_axis(bgk_temperature.size)
     full_temperature_i = interpolate_to(x, full_temperature)
@@ -82,7 +82,7 @@ def main() -> int:
         )
     elif case_name == "poiseuille":
         bgk_velocity_label = "BGK ($u_x$)"
-        full_velocity_label = "full Boltzmann ($u_y$ flow dir.)"
+        full_velocity_label = "full Boltzmann ($u_x$)"
         first_panel = (
             "Poiseuille velocity",
             normalized(bgk_velocity),
@@ -91,7 +91,7 @@ def main() -> int:
         )
     else:
         bgk_velocity_label = "BGK ($u_x$)"
-        full_velocity_label = "full Boltzmann ($u_y$ flow dir.)"
+        full_velocity_label = "full Boltzmann ($u_x$)"
         first_panel = (
             "Couette flow-direction velocity shape",
             normalized(bgk_velocity),
