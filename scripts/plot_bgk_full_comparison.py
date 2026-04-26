@@ -68,46 +68,86 @@ def main() -> int:
     full_temperature_i = interpolate_to(x, full_temperature)
     full_velocity_i = interpolate_to(x, full_velocity)
 
+    bgk_velocity_label = "BGK"
+    full_velocity_label = "full Boltzmann"
+
+    heat_warning = None
+
     if case_name == "heat_conduction":
         first_panel = (
-            "Temperature profile shape",
-            normalized(bgk_temperature),
-            normalized(full_temperature_i),
-            "T / max|T|",
+            "Temperature",
+            bgk_temperature,
+            full_temperature_i,
+            "temperature",
         )
     elif case_name == "poiseuille":
+        bgk_velocity_label = "BGK ($u_x$)"
+        full_velocity_label = "full Boltzmann ($u_y$ flow dir.)"
         first_panel = (
-            "Poiseuille velocity shape",
+            "Poiseuille velocity",
             normalized(bgk_velocity),
             normalized(full_velocity_i),
-            "stream velocity / max",
+            "flow-direction velocity / max",
         )
     else:
+        bgk_velocity_label = "BGK ($u_x$)"
+        full_velocity_label = "full Boltzmann ($u_y$ flow dir.)"
         first_panel = (
-            "Couette velocity shape",
+            "Couette flow-direction velocity shape",
             normalized(bgk_velocity),
             normalized(full_velocity_i),
-            "stream velocity / max",
+            "flow-direction velocity / max",
         )
+
+    # Keep the comparison plot available even when the full-Boltzmann heat
+    # conduction temperature level looks suspicious; that warning is still
+    # useful diagnostic context.
+    if case_name == "heat_conduction":
+        full_temp_mean = np.mean(full_temperature)
+        if abs(full_temp_mean - 2.0) < 0.5:
+            heat_warning = (
+                f"Warning: Full Boltzmann heat conduction data appears invalid "
+                f"(mean temperature {full_temp_mean:.2f} vs expected ~0.8)"
+            )
+            print(heat_warning)
 
     fig, axes = plt.subplots(1, 2, figsize=(10, 4), constrained_layout=True)
 
     panels = [
         first_panel,
-        ("Temperature variation shape", normalized(centered(bgk_temperature)), normalized(centered(full_temperature_i)), "(T - T_center) / max"),
+        (
+            "Temperature variation shape",
+            normalized(centered(bgk_temperature)),
+            normalized(centered(full_temperature_i)),
+            "(T - T_center) / max",
+        ),
     ]
 
     for ax, (title, bgk_values, full_values, xlabel) in zip(axes, panels):
         mismatch = mismatch_linf(bgk_values, full_values)
-        ax.plot(bgk_values, x, label="BGK", linewidth=2.0)
-        ax.plot(full_values, x, "--", label="full Boltzmann", linewidth=2.0)
+        if "velocity" in title.lower():
+            bgk_label = bgk_velocity_label
+            full_label = full_velocity_label
+        else:
+            bgk_label = "BGK"
+            full_label = "full Boltzmann"
+
+        ax.plot(bgk_values, x, label=bgk_label, linewidth=2.0)
+        ax.plot(full_values, x, "--", label=full_label, linewidth=2.0)
         ax.set_title(f"{title}\nmax mismatch = {mismatch:.3g}")
         ax.set_xlabel(xlabel)
         ax.set_ylabel("normalized channel coordinate")
         ax.grid(True, alpha=0.3)
         ax.legend(frameon=False)
 
-    fig.suptitle("Qualitative BGK/full-Boltzmann comparison, not calibrated validation", fontsize=11)
+    if heat_warning is None:
+        fig.suptitle("Qualitative BGK/full-Boltzmann comparison", fontsize=11)
+    else:
+        fig.suptitle(
+            "Qualitative BGK/full-Boltzmann comparison\n"
+            "full-Boltzmann heat-conduction temperature level looks inconsistent",
+            fontsize=11,
+        )
 
     out = full_dir / "bgk_full_comparison.png"
     fig.savefig(out, dpi=160)

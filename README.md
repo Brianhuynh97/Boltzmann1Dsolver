@@ -101,6 +101,12 @@ It uses:
 - diffuse wall boundary inputs
 - a discrete hard-sphere collision operator
 
+Axis convention note:
+
+- in the BGK channel solver, the wall-normal direction is `y` and the flow direction is `x`
+- in the full-Boltzmann comparison solver, the wall-normal direction is `x` and the flow direction used in the default Couette/Poiseuille setups is `y`
+- because of that, full-Boltzmann Couette/Poiseuille runs store the main flow profile in `bulk_vy.txt`, while `bulk_vx.txt` remains near zero
+
 The collision operator is a direct discrete approximation to gain/loss collisions over velocity pairs and a small set of scattering directions. It is much more expensive than BGK, so the default full-Boltzmann runs use smaller grids and shorter times.
 
 The full-Boltzmann outputs are intended for qualitative comparison with BGK, not for high-resolution benchmark validation.
@@ -120,7 +126,8 @@ Implementation:
 
 Main output quantity:
 
-- streamwise velocity `bulk_vx.txt`
+- BGK solver: streamwise velocity `bulk_vx.txt`
+- full-Boltzmann comparison solver: flow-direction velocity `bulk_vy.txt`
 
 ### Poiseuille
 
@@ -134,7 +141,8 @@ Implementation:
 
 Main output quantity:
 
-- streamwise velocity `bulk_vx.txt`
+- BGK solver: streamwise velocity `bulk_vx.txt`
+- full-Boltzmann comparison solver: flow-direction velocity `bulk_vy.txt`
 
 ### Heat Conduction
 
@@ -156,8 +164,8 @@ Each case writes files such as:
 
 - `y_cells.txt`: wall-normal grid
 - `density.txt`: density profile
-- `bulk_vx.txt`: streamwise velocity profile
-- `bulk_vy.txt`: zero placeholder for plotting compatibility
+- `bulk_vx.txt`: BGK streamwise velocity profile; for full-Boltzmann runs this is near zero because `x` is wall-normal
+- `bulk_vy.txt`: BGK zero placeholder; for full-Boltzmann Couette/Poiseuille runs this carries the flow-direction velocity profile
 - `temperature.txt`: temperature profile
 - `velocity_axis.txt`: velocity-grid axis used for contours
 - `distribution_left.txt`: lower-wall velocity-space slice

@@ -41,19 +41,19 @@ def main() -> int:
     if case_name == "poiseuille":
         primary_velocity = bulk_vx
         velocity_label = "u_x"
-        velocity_title = "Poiseuille streamwise velocity"
+        velocity_title = "Poiseuille velocity"
     elif case_name == "heat_conduction":
         primary_velocity = bulk_vx
         velocity_label = "u_x"
-        velocity_title = "Streamwise velocity (near zero)"
+        velocity_title = "Velocity (near zero)"
     elif case_name == "couette":
         primary_velocity = bulk_vx
         velocity_label = "u_x"
-        velocity_title = "Couette streamwise velocity"
+        velocity_title = "Couette velocity"
     else:
         primary_velocity = bulk_vx
         velocity_label = "u_x"
-        velocity_title = "Streamwise velocity"
+        velocity_title = "Velocity"
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 4), constrained_layout=True)
 
