@@ -101,10 +101,8 @@ It uses:
 - diffuse wall boundary inputs
 - a discrete hard-sphere collision operator
 
-Axis convention note:
 
-- both the BGK channel solver and the full-Boltzmann comparison solver use `y` as the wall-normal direction and `x` as the flow direction in the default Couette/Poiseuille setups
-- because of that, the main Couette/Poiseuille flow profile is written to `bulk_vx.txt`
+- Both the BGK channel solver and the full-Boltzmann comparison solver use `y` as the wall-normal direction and `x` as the flow direction in the default Couette/Poiseuille setups
 
 The collision operator is a direct discrete approximation to gain/loss collisions over velocity pairs and a small set of scattering directions. It is much more expensive than BGK, so the default full-Boltzmann runs use smaller grids and shorter times.
 
