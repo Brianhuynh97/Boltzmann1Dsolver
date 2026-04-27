@@ -179,11 +179,6 @@ python3 scripts/plot_three_case_convergence.py
 python3 scripts/plot_bgk_full_comparison.py couette output/bgk_channel/couette output/full_boltzmann_1d3v/couette
 ```
 ## Current Limitations
-
-This is a compact educational/research code, not a validated production solver.
-
-Current limitations:
-
 - The main channel solver uses a BGK approximation, not the full collision operator `Q(f,f)`
 - The full-Boltzmann solver is coarse and explicit, so it is useful for comparison but not a validated production solver
 - The channel discretization is simplified
