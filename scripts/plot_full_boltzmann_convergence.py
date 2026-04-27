@@ -47,7 +47,7 @@ def main() -> int:
     ax.grid(True, which="both", alpha=0.3)
     ax.legend(frameon=False)
 
-    fig.suptitle("Full-Boltzmann residual history", fontsize=12)
+    fig.suptitle("Full-Boltzmann Convergence", fontsize=12)
 
     out = OUTPUT_ROOT / "full_boltzmann_convergence.png"
     fig.savefig(out, dpi=160)
