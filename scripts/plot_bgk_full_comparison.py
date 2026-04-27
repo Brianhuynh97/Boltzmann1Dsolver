@@ -93,7 +93,7 @@ def main() -> int:
         bgk_velocity_label = "BGK ($u_x$)"
         full_velocity_label = "full Boltzmann ($u_x$)"
         first_panel = (
-            "Couette flow-direction velocity shape",
+            "Couette velocity",
             normalized(bgk_velocity),
             normalized(full_velocity_i),
             "flow-direction velocity / max",
@@ -134,7 +134,7 @@ def main() -> int:
 
         ax.plot(bgk_values, x, label=bgk_label, linewidth=2.0)
         ax.plot(full_values, x, "--", label=full_label, linewidth=2.0)
-        ax.set_title(f"{title}\nmax mismatch = {mismatch:.3g}")
+        ax.set_title(f"{title}")
         ax.set_xlabel(xlabel)
         ax.set_ylabel("normalized channel coordinate")
         ax.grid(True, alpha=0.3)
