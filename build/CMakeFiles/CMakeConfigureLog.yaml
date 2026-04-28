@@ -483,3 +483,184 @@ events:
         
       exitCode: 2
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/Cellar/cmake/3.30.2/share/cmake/Modules/FindOpenMP.cmake:238 (try_compile)"
+      - "/opt/homebrew/Cellar/cmake/3.30.2/share/cmake/Modules/FindOpenMP.cmake:506 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:25 (find_package)"
+    description: "Detecting CXX OpenMP compiler info"
+    directories:
+      source: "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr"
+      binary: "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: "26.3"
+      CMAKE_OSX_SYSROOT: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_CXX_Xclang fopenmp"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr'
+        
+        Run Build Command(s): /opt/homebrew/Cellar/cmake/3.30.2/bin/cmake -E env VERBOSE=1 /opt/homebrew/bin/gmake -f Makefile cmTC_031b0/fast
+        /opt/homebrew/bin/gmake  -f CMakeFiles/cmTC_031b0.dir/build.make CMakeFiles/cmTC_031b0.dir/build
+        gmake[1]: Entering directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr'
+        Building CXX object CMakeFiles/cmTC_031b0.dir/OpenMPTryFlag.cpp.o
+        /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -Xclang -fopenmp -v -std=c++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk -mmacosx-version-min=26.3 -MD -MT CMakeFiles/cmTC_031b0.dir/OpenMPTryFlag.cpp.o -MF CMakeFiles/cmTC_031b0.dir/OpenMPTryFlag.cpp.o.d -o CMakeFiles/cmTC_031b0.dir/OpenMPTryFlag.cpp.o -c "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr/OpenMPTryFlag.cpp"
+        Apple clang version 21.0.0 (clang-2100.0.123.102)
+        Target: arm64-apple-darwin25.3.0
+        Thread model: posix
+        InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+        ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"
+         "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang" -cc1 -triple arm64-apple-macosx26.3.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name OpenMPTryFlag.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -fno-sized-deallocation -target-sdk-version=26.4 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -fdefine-target-os-macros -fno-assume-unique-vtables -fno-modulemap-allow-subdirectory-search -enable-tlsdesc -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +altnzcv -target-feature +ccdp -target-feature +ccpp -target-feature +complxnum -target-feature +crc -target-feature +dotprod -target-feature +flagm -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +fptoint -target-feature +fullfp16 -target-feature +jsconv -target-feature +lse -target-feature +neon -target-feature +pauth -target-feature +perfmon -target-feature +predres -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sb -target-feature +sha2 -target-feature +sha3 -target-feature +specrestrict -target-feature +ssbs -target-abi darwinpcs -debugger-tuning=lldb "-fdebug-compilation-dir=/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr" -target-linker-version 1266.8 -v "-fcoverage-compilation-dir=/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr" -resource-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21 -dependency-file CMakeFiles/cmTC_031b0.dir/OpenMPTryFlag.cpp.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_031b0.dir/OpenMPTryFlag.cpp.o -sys-header-deps -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1 -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/local/include -internal-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/Frameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/SubFrameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/Library/Frameworks -Wno-elaborated-enum-base -std=c++20 -fdeprecated-macro -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fno-cxx-modules -fno-implicit-modules -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fmax-type-align=16 -fcommon -fopenmp -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -Wno-error=allocator-wrappers -fdwarf2-cfi-asm -o CMakeFiles/cmTC_031b0.dir/OpenMPTryFlag.cpp.o -x c++ "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr/OpenMPTryFlag.cpp"
+        clang -cc1 version 21.0.0 (clang-2100.0.123.102) default target arm64-apple-darwin25.3.0
+        ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/local/include"
+        ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1
+         /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include
+         /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/Frameworks (framework directory)
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/SubFrameworks (framework directory)
+        End of search list.
+        /Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr/OpenMPTryFlag.cpp:2:10: fatal error: 'omp.h' file not found
+            2 | #include <omp.h>
+              |          ^~~~~~~
+        1 error generated.
+        gmake[1]: *** [CMakeFiles/cmTC_031b0.dir/build.make:79: CMakeFiles/cmTC_031b0.dir/OpenMPTryFlag.cpp.o] Error 1
+        gmake[1]: Leaving directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-i8KnAr'
+        gmake: *** [Makefile:127: cmTC_031b0/fast] Error 2
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/Cellar/cmake/3.30.2/share/cmake/Modules/FindOpenMP.cmake:238 (try_compile)"
+      - "/opt/homebrew/Cellar/cmake/3.30.2/share/cmake/Modules/FindOpenMP.cmake:506 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "Detecting CXX OpenMP compiler info"
+    directories:
+      source: "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq"
+      binary: "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: "26.3"
+      CMAKE_OSX_SYSROOT: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_CXX_Xclang fopenmp"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq'
+        
+        Run Build Command(s): /opt/homebrew/Cellar/cmake/3.30.2/bin/cmake -E env VERBOSE=1 /opt/homebrew/bin/gmake -f Makefile cmTC_d9a5b/fast
+        gmake[1]: Entering directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq'
+        /opt/homebrew/bin/gmake  -f CMakeFiles/cmTC_d9a5b.dir/build.make CMakeFiles/cmTC_d9a5b.dir/build
+        gmake[2]: Entering directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq'
+        Building CXX object CMakeFiles/cmTC_d9a5b.dir/OpenMPTryFlag.cpp.o
+        /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -Xclang -fopenmp -v -std=c++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk -mmacosx-version-min=26.3 -MD -MT CMakeFiles/cmTC_d9a5b.dir/OpenMPTryFlag.cpp.o -MF CMakeFiles/cmTC_d9a5b.dir/OpenMPTryFlag.cpp.o.d -o CMakeFiles/cmTC_d9a5b.dir/OpenMPTryFlag.cpp.o -c "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq/OpenMPTryFlag.cpp"
+        Apple clang version 21.0.0 (clang-2100.0.123.102)
+        Target: arm64-apple-darwin25.3.0
+        Thread model: posix
+        InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+        ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"
+         "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang" -cc1 -triple arm64-apple-macosx26.3.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name OpenMPTryFlag.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -fno-sized-deallocation -target-sdk-version=26.4 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -fdefine-target-os-macros -fno-assume-unique-vtables -fno-modulemap-allow-subdirectory-search -enable-tlsdesc -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +altnzcv -target-feature +ccdp -target-feature +ccpp -target-feature +complxnum -target-feature +crc -target-feature +dotprod -target-feature +flagm -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +fptoint -target-feature +fullfp16 -target-feature +jsconv -target-feature +lse -target-feature +neon -target-feature +pauth -target-feature +perfmon -target-feature +predres -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sb -target-feature +sha2 -target-feature +sha3 -target-feature +specrestrict -target-feature +ssbs -target-abi darwinpcs -debugger-tuning=lldb "-fdebug-compilation-dir=/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq" -target-linker-version 1266.8 -v "-fcoverage-compilation-dir=/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq" -resource-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21 -dependency-file CMakeFiles/cmTC_d9a5b.dir/OpenMPTryFlag.cpp.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_d9a5b.dir/OpenMPTryFlag.cpp.o -sys-header-deps -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1 -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/local/include -internal-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/Frameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/SubFrameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/Library/Frameworks -Wno-elaborated-enum-base -std=c++20 -fdeprecated-macro -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fno-cxx-modules -fno-implicit-modules -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fmax-type-align=16 -fcommon -fopenmp -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -Wno-error=allocator-wrappers -fdwarf2-cfi-asm -o CMakeFiles/cmTC_d9a5b.dir/OpenMPTryFlag.cpp.o -x c++ "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq/OpenMPTryFlag.cpp"
+        clang -cc1 version 21.0.0 (clang-2100.0.123.102) default target arm64-apple-darwin25.3.0
+        ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/local/include"
+        ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1
+         /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include
+         /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/Frameworks (framework directory)
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/SubFrameworks (framework directory)
+        End of search list.
+        /Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq/OpenMPTryFlag.cpp:2:10: fatal error: 'omp.h' file not found
+            2 | #include <omp.h>
+              |          ^~~~~~~
+        1 error generated.
+        gmake[2]: *** [CMakeFiles/cmTC_d9a5b.dir/build.make:79: CMakeFiles/cmTC_d9a5b.dir/OpenMPTryFlag.cpp.o] Error 1
+        gmake[2]: Leaving directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq'
+        gmake[1]: *** [Makefile:127: cmTC_d9a5b/fast] Error 2
+        gmake[1]: Leaving directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-mjGEdq'
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/Cellar/cmake/3.30.2/share/cmake/Modules/FindOpenMP.cmake:238 (try_compile)"
+      - "/opt/homebrew/Cellar/cmake/3.30.2/share/cmake/Modules/FindOpenMP.cmake:506 (_OPENMP_GET_FLAGS)"
+      - "CMakeLists.txt:24 (find_package)"
+    description: "Detecting CXX OpenMP compiler info"
+    directories:
+      source: "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo"
+      binary: "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: "26.3"
+      CMAKE_OSX_SYSROOT: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk"
+    buildResult:
+      variable: "OpenMP_COMPILE_RESULT_CXX_Xclang fopenmp"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo'
+        
+        Run Build Command(s): /opt/homebrew/Cellar/cmake/3.30.2/bin/cmake -E env VERBOSE=1 /opt/homebrew/bin/gmake -f Makefile cmTC_9cef7/fast
+        gmake[1]: Entering directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo'
+        /opt/homebrew/bin/gmake  -f CMakeFiles/cmTC_9cef7.dir/build.make CMakeFiles/cmTC_9cef7.dir/build
+        gmake[2]: Entering directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo'
+        Building CXX object CMakeFiles/cmTC_9cef7.dir/OpenMPTryFlag.cpp.o
+        /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -Xclang -fopenmp -v -std=c++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk -mmacosx-version-min=26.3 -MD -MT CMakeFiles/cmTC_9cef7.dir/OpenMPTryFlag.cpp.o -MF CMakeFiles/cmTC_9cef7.dir/OpenMPTryFlag.cpp.o.d -o CMakeFiles/cmTC_9cef7.dir/OpenMPTryFlag.cpp.o -c "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo/OpenMPTryFlag.cpp"
+        Apple clang version 21.0.0 (clang-2100.0.123.102)
+        Target: arm64-apple-darwin25.3.0
+        Thread model: posix
+        InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+        ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"
+         "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang" -cc1 -triple arm64-apple-macosx26.3.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name OpenMPTryFlag.cpp -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -fno-sized-deallocation -target-sdk-version=26.4 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -fdefine-target-os-macros -fno-assume-unique-vtables -fno-modulemap-allow-subdirectory-search -enable-tlsdesc -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +altnzcv -target-feature +ccdp -target-feature +ccpp -target-feature +complxnum -target-feature +crc -target-feature +dotprod -target-feature +flagm -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +fptoint -target-feature +fullfp16 -target-feature +jsconv -target-feature +lse -target-feature +neon -target-feature +pauth -target-feature +perfmon -target-feature +predres -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sb -target-feature +sha2 -target-feature +sha3 -target-feature +specrestrict -target-feature +ssbs -target-abi darwinpcs -debugger-tuning=lldb "-fdebug-compilation-dir=/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo" -target-linker-version 1266.8 -v "-fcoverage-compilation-dir=/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo" -resource-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21 -dependency-file CMakeFiles/cmTC_9cef7.dir/OpenMPTryFlag.cpp.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_9cef7.dir/OpenMPTryFlag.cpp.o -sys-header-deps -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1 -internal-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/local/include -internal-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include -internal-externc-isystem /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/Frameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/SubFrameworks -internal-iframework /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/Library/Frameworks -Wno-elaborated-enum-base -std=c++20 -fdeprecated-macro -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fno-cxx-modules -fno-implicit-modules -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -fmax-type-align=16 -fcommon -fopenmp -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -Wno-error=allocator-wrappers -fdwarf2-cfi-asm -o CMakeFiles/cmTC_9cef7.dir/OpenMPTryFlag.cpp.o -x c++ "/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo/OpenMPTryFlag.cpp"
+        clang -cc1 version 21.0.0 (clang-2100.0.123.102) default target arm64-apple-darwin25.3.0
+        ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/local/include"
+        ignoring nonexistent directory "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include/c++/v1
+         /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/21/include
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/usr/include
+         /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/Frameworks (framework directory)
+         /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.4.sdk/System/Library/SubFrameworks (framework directory)
+        End of search list.
+        /Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo/OpenMPTryFlag.cpp:2:10: fatal error: 'omp.h' file not found
+            2 | #include <omp.h>
+              |          ^~~~~~~
+        1 error generated.
+        gmake[2]: *** [CMakeFiles/cmTC_9cef7.dir/build.make:79: CMakeFiles/cmTC_9cef7.dir/OpenMPTryFlag.cpp.o] Error 1
+        gmake[2]: Leaving directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo'
+        gmake[1]: *** [Makefile:127: cmTC_9cef7/fast] Error 2
+        gmake[1]: Leaving directory '/Users/brianhuynh/Boltzmann 1D Solver/build/CMakeFiles/CMakeScratch/TryCompile-KLIVUo'
+        
+      exitCode: 2
+...

@@ -11,7 +11,6 @@ option(BOLTZMANN_ENABLE_OPENMP "Enable OpenMP parallelism when available" ON)
 add_executable(Boltzmann1DBGKSolver
     Boltzmann_1D_Solver/include/json/jsoncpp.cpp
     Boltzmann_1D_Solver/solver/main.cpp
-    Boltzmann_1D_Solver/utils/Norma.cpp
 )
 
 target_include_directories(Boltzmann1DBGKSolver PRIVATE
@@ -23,6 +22,7 @@ target_include_directories(Boltzmann1DBGKSolver PRIVATE
 
 if(BOLTZMANN_ENABLE_OPENMP)
     find_package(OpenMP COMPONENTS CXX QUIET)
+
     if(OpenMP_CXX_FOUND)
         target_link_libraries(Boltzmann1DBGKSolver PRIVATE OpenMP::OpenMP_CXX)
         target_compile_definitions(Boltzmann1DBGKSolver PRIVATE BOLTZMANN_HAS_OPENMP=1)

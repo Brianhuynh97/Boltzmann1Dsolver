@@ -23,8 +23,9 @@ def main() -> int:
         return 1
 
     output_dir = Path(sys.argv[1])
-    case_name = output_dir.name.lower()
-    axis_path = output_dir / "y_cells.txt"
+    axis_path = output_dir / "x_cells.txt"
+    if not axis_path.exists():
+        axis_path = output_dir / "y_cells.txt"
     density = load_profile(output_dir / "density.txt")
     bulk_vx = load_profile(output_dir / "bulk_vx.txt")
     temperature = load_profile(output_dir / "temperature.txt")
@@ -33,27 +34,14 @@ def main() -> int:
 
     if axis_path.exists():
         coord = np.loadtxt(axis_path)
-        coord_label = "y"
+        coord_label = "x"
     else:
         coord = np.arange(density.size)
         coord_label = "Cell index"
 
-    if case_name == "poiseuille":
-        primary_velocity = bulk_vx
-        velocity_label = "u_x"
-        velocity_title = "Poiseuille velocity"
-    elif case_name == "heat_conduction":
-        primary_velocity = bulk_vx
-        velocity_label = "u_x"
-        velocity_title = "Velocity (near zero)"
-    elif case_name == "couette":
-        primary_velocity = bulk_vx
-        velocity_label = "u_x"
-        velocity_title = "Couette velocity"
-    else:
-        primary_velocity = bulk_vx
-        velocity_label = "u_x"
-        velocity_title = "Velocity"
+    primary_velocity = bulk_vx
+    velocity_label = "u"
+    velocity_title = "Flow velocity"
 
     fig, axes = plt.subplots(1, 3, figsize=(12, 4), constrained_layout=True)
 

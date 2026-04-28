@@ -177,30 +177,6 @@ Boltzmann_1D_Solver/solver/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Boltzmann1DBGKSolver.dir/build.make CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/solver/main.cpp.s
 .PHONY : Boltzmann_1D_Solver/solver/main.cpp.s
 
-Boltzmann_1D_Solver/utils/Norma.o: Boltzmann_1D_Solver/utils/Norma.cpp.o
-.PHONY : Boltzmann_1D_Solver/utils/Norma.o
-
-# target to build an object file
-Boltzmann_1D_Solver/utils/Norma.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Boltzmann1DBGKSolver.dir/build.make CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.o
-.PHONY : Boltzmann_1D_Solver/utils/Norma.cpp.o
-
-Boltzmann_1D_Solver/utils/Norma.i: Boltzmann_1D_Solver/utils/Norma.cpp.i
-.PHONY : Boltzmann_1D_Solver/utils/Norma.i
-
-# target to preprocess a source file
-Boltzmann_1D_Solver/utils/Norma.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Boltzmann1DBGKSolver.dir/build.make CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.i
-.PHONY : Boltzmann_1D_Solver/utils/Norma.cpp.i
-
-Boltzmann_1D_Solver/utils/Norma.s: Boltzmann_1D_Solver/utils/Norma.cpp.s
-.PHONY : Boltzmann_1D_Solver/utils/Norma.s
-
-# target to generate assembly for a file
-Boltzmann_1D_Solver/utils/Norma.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Boltzmann1DBGKSolver.dir/build.make CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.s
-.PHONY : Boltzmann_1D_Solver/utils/Norma.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -216,9 +192,6 @@ help:
 	@echo "... Boltzmann_1D_Solver/solver/main.o"
 	@echo "... Boltzmann_1D_Solver/solver/main.i"
 	@echo "... Boltzmann_1D_Solver/solver/main.s"
-	@echo "... Boltzmann_1D_Solver/utils/Norma.o"
-	@echo "... Boltzmann_1D_Solver/utils/Norma.i"
-	@echo "... Boltzmann_1D_Solver/utils/Norma.s"
 .PHONY : help
 
 

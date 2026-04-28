@@ -5,8 +5,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/include/json/jsoncpp.cpp.o.d"
   "CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/solver/main.cpp.o"
   "CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/solver/main.cpp.o.d"
-  "CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.o"
-  "CMakeFiles/Boltzmann1DBGKSolver.dir/Boltzmann_1D_Solver/utils/Norma.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.
