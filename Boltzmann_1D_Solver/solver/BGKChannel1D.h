@@ -109,7 +109,6 @@ namespace bgk_channel
         VelocityBoundaryCondition vmax_boundary{VelocityBoundaryCondition::DirichletZero};
         T collision_frequency{T(10)};
         T cfl{T(0.5)};
-        T final_time{T(-1)};
         int snapshot_interval{10};
         int max_iterations{250};
         T tolerance{T(1e-8)};
@@ -399,9 +398,11 @@ namespace bgk_channel
     template <std::floating_point T>
     inline ChannelState<T> solveSteadyChannelBGK(
         const ChannelProblemData<T> &data,
+        std::vector<T> &convergence_history,
         const std::filesystem::path *snapshot_folder = nullptr)
     {
-        // Reduced 1D_x-1D_c BGK model:
+        convergence_history.clear();
+
         //   df/dt + c df/dx + (b/m) df/dc = -nu (f - f_eq).
         const T reference_temperature = T(0.5) * (data.left_wall_temperature + data.right_wall_temperature);
         const auto reference_equilibrium = maxwellianCell(
@@ -442,14 +443,6 @@ namespace bgk_channel
         //   df/dt + c df/dx + (b/m) df/dc = -nu (f - f_eq).
         // Snapshot times recorded for the GIF are multiples of this dt.
         const T stability_dt = std::min({transport_dt, velocity_dt, collision_dt});
-        const int time_limited_iterations =
-            data.final_time > T(0)
-                ? std::max(1, static_cast<int>(std::ceil(data.final_time / stability_dt)))
-                : data.max_iterations;
-        const int iteration_limit =
-            data.final_time > T(0)
-                ? std::min(data.max_iterations, time_limited_iterations)
-                : data.max_iterations;
 
         for (int x_i = 0; x_i < data.n_x; ++x_i)
         {
@@ -468,7 +461,7 @@ namespace bgk_channel
             ++frame_index;
         }
 
-        for (int iter = 0; iter < iteration_limit; ++iter)
+        for (int iter = 0; iter < data.max_iterations; ++iter)
         {
             const MacroState<T> macro = computeMacroState(state, data.velocity_grid, data.particle_mass, data.boltzmann_over_mass);
             std::vector<std::vector<T>> local_equilibria(data.n_x);
@@ -497,9 +490,7 @@ namespace bgk_channel
                         const T x_upwind = (f - inflow_value) / dx;
                         const T c_upwind = velocityDerivativeUpwind(state, data.velocity_grid, acceleration, x_i, v_i);
                         const T rhs =
-                            -c * x_upwind
-                            -acceleration * c_upwind
-                            -data.collision_frequency * (f - local_equilibria[x_i][v_i]);
+                            -c * x_upwind - acceleration * c_upwind - data.collision_frequency * (f - local_equilibria[x_i][v_i]);
                         next.at(x_i, v_i) = time_integration::stepFromSlope(f, stability_dt, rhs);
                         inflow_value = f;
                     }
@@ -513,9 +504,7 @@ namespace bgk_channel
                         const T x_upwind = (inflow_value - f) / dx;
                         const T c_upwind = velocityDerivativeUpwind(state, data.velocity_grid, acceleration, x_i, v_i);
                         const T rhs =
-                            -c * x_upwind
-                            -acceleration * c_upwind
-                            -data.collision_frequency * (f - local_equilibria[x_i][v_i]);
+                            -c * x_upwind - acceleration * c_upwind - data.collision_frequency * (f - local_equilibria[x_i][v_i]);
                         next.at(x_i, v_i) = time_integration::stepFromSlope(f, stability_dt, rhs);
                         inflow_value = f;
                     }
@@ -527,8 +516,7 @@ namespace bgk_channel
                         const T f = state.at(x_i, v_i);
                         const T c_upwind = velocityDerivativeUpwind(state, data.velocity_grid, acceleration, x_i, v_i);
                         const T rhs =
-                            -acceleration * c_upwind
-                            -data.collision_frequency * (f - local_equilibria[x_i][v_i]);
+                            -acceleration * c_upwind - data.collision_frequency * (f - local_equilibria[x_i][v_i]);
                         next.at(x_i, v_i) = time_integration::stepFromSlope(f, stability_dt, rhs);
                     }
                 }
@@ -550,21 +538,22 @@ namespace bgk_channel
                 next.values[i] = candidate;
             }
 
-            // Explicit velocity-space boundary condition on the computational cutoffs.
+            // velocity-space boundary condition
             applyVelocityBoundary(next, data.vmin_boundary, data.vmax_boundary);
 
             const T residual = std::sqrt(change_norm_squared / std::max(previous_norm_squared, T(1e-30)));
+            convergence_history.push_back(residual);
             state = std::move(next);
 
             if (snapshot_folder != nullptr &&
                 data.snapshot_interval > 0 &&
-                (((iter + 1) % data.snapshot_interval) == 0 || residual < data.tolerance || iter + 1 == iteration_limit))
+                (((iter + 1) % data.snapshot_interval) == 0 || residual < data.tolerance || iter + 1 == data.max_iterations))
             {
                 writeDistributionSnapshot(*snapshot_folder, data, state, frame_index, T(iter + 1) * stability_dt);
                 ++frame_index;
             }
 
-            if (residual < data.tolerance && (data.final_time <= T(0) || T(iter + 1) * stability_dt >= data.final_time))
+            if (residual < data.tolerance)
             {
                 break;
             }
@@ -576,7 +565,8 @@ namespace bgk_channel
     template <std::floating_point T>
     inline ChannelState<T> solveSteadyChannelBGK(const ChannelProblemData<T> &data)
     {
-        return solveSteadyChannelBGK(data, nullptr);
+        std::vector<T> unused_convergence_history;
+        return solveSteadyChannelBGK(data, unused_convergence_history);
     }
 
     template <std::floating_point T>
