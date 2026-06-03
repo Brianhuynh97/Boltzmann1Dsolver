@@ -65,10 +65,7 @@ namespace
             400,
             1e-7);
 
-        // Positive body force adds a visible right-going drift so the distribution motion
-        // is easier to see in the x-c plots and animation.
         data.body_force = 0.4;
-        // Animate over a longer window so the drift is visibly separated between frames.
         data.final_time = 8.0;
         data.snapshot_interval = 20;
 

@@ -30,8 +30,8 @@ namespace bgk_channel
     template <std::floating_point T>
     struct VelocityGrid1D
     {
-        int n_v{};
-        T v_max{};
+        int n_v{}; // number of velocity cells
+        T v_max{}; // maximum velocity
         T dv{};
         std::vector<T> axis;
 
@@ -87,11 +87,11 @@ namespace bgk_channel
     template <std::floating_point T>
     struct MacroState
     {
-        std::vector<T> density;
+        std::vector<T> density; // mass density at each spatial cell
         std::vector<T> bulk_v;
         std::vector<T> temperature;
     };
-
+    // compute the Maxwellian equilibrium distribution
     template <std::floating_point T>
     struct ChannelProblemData
     {
@@ -109,11 +109,13 @@ namespace bgk_channel
         VelocityBoundaryCondition vmax_boundary{VelocityBoundaryCondition::DirichletZero};
         T collision_frequency{T(10)};
         T cfl{T(0.5)};
+        T final_time{T(-1)};
         int snapshot_interval{10};
         int max_iterations{250};
         T tolerance{T(1e-8)};
     };
 
+    // apply velocity-space boundary conditions to the distribution function
     template <std::floating_point T>
     inline void applyVelocityBoundary(
         ChannelState<T> &state,
@@ -129,16 +131,16 @@ namespace bgk_channel
         {
             if (vmin_boundary == VelocityBoundaryCondition::DirichletZero)
             {
-                state.at(x_i, 0) = T(0);
+                state.at(x_i, 0) = T(0); // set the distribution function to zero at the minimum velocity boundary
             }
             else
             {
-                state.at(x_i, 0) = state.at(x_i, 1);
+                state.at(x_i, 0) = state.at(x_i, 1); // set the distribution function at the minimum velocity boundary to the value of the adjacent interior cell, creating a zero-gradient condition
             }
 
             if (vmax_boundary == VelocityBoundaryCondition::DirichletZero)
             {
-                state.at(x_i, state.n_v - 1) = T(0);
+                state.at(x_i, state.n_v - 1) = T(0); // set the distribution function to zero at the maximum velocity boundary
             }
             else
             {
@@ -147,6 +149,7 @@ namespace bgk_channel
         }
     }
 
+    // compute the Maxwellian equilibrium distribution for a given cell based on the local macroscopic properties (density, bulk velocity, temperature) and the velocity grid
     template <std::floating_point T>
     inline std::vector<T> maxwellianCell(
         const VelocityGrid1D<T> &grid,
@@ -157,10 +160,10 @@ namespace bgk_channel
         T boltzmann_over_mass)
     {
         std::vector<T> values(grid.size());
-        const T safe_temperature = std::max(temperature, T(1e-12));
+        const T safe_temperature = std::max(temperature, T(1e-12)); // prevent division by zero or negative temperature in the Maxwellian formula
         const T thermal_variance = T(2) * boltzmann_over_mass * safe_temperature;
         const T prefactor = (density / std::max(particle_mass, T(1e-12))) /
-                            std::sqrt(T(2) * kPi<T> * boltzmann_over_mass * safe_temperature);
+                            std::sqrt(T(2) * kPi<T> * boltzmann_over_mass * safe_temperature); // prefactor in the Maxwellian distribution formula, which includes the density, particle mass, temperature, and Boltzmann constant
 
         for (int v_i = 0; v_i < grid.size(); ++v_i)
         {
@@ -171,6 +174,7 @@ namespace bgk_channel
         return values;
     }
 
+    // compute the distribution function value at the right wall boundary for a given velocity index, ensuring mass conservation by scaling the incoming wall distribution based on the outgoing flux from the interior
     template <std::floating_point T>
     inline T completeAccommodationLeftWallValue(
         const VelocityGrid1D<T> &grid,
@@ -235,6 +239,7 @@ namespace bgk_channel
         return state.at(interior_x, v_i);
     }
 
+    // compute mass density, momentum density, and energy density from the distribution function, then convert to density, bulk velocity, and temperature
     template <std::floating_point T>
     inline MacroState<T> computeMacroState(
         const ChannelState<T> &state,
@@ -398,11 +403,8 @@ namespace bgk_channel
     template <std::floating_point T>
     inline ChannelState<T> solveSteadyChannelBGK(
         const ChannelProblemData<T> &data,
-        std::vector<T> &convergence_history,
         const std::filesystem::path *snapshot_folder = nullptr)
     {
-        convergence_history.clear();
-
         //   df/dt + c df/dx + (b/m) df/dc = -nu (f - f_eq).
         const T reference_temperature = T(0.5) * (data.left_wall_temperature + data.right_wall_temperature);
         const auto reference_equilibrium = maxwellianCell(
@@ -443,6 +445,14 @@ namespace bgk_channel
         //   df/dt + c df/dx + (b/m) df/dc = -nu (f - f_eq).
         // Snapshot times recorded for the GIF are multiples of this dt.
         const T stability_dt = std::min({transport_dt, velocity_dt, collision_dt});
+        const int time_limited_iterations =
+            data.final_time > T(0)
+                ? std::max(1, static_cast<int>(std::ceil(data.final_time / stability_dt)))
+                : data.max_iterations;
+        const int iteration_limit =
+            data.final_time > T(0)
+                ? std::min(data.max_iterations, time_limited_iterations)
+                : data.max_iterations;
 
         for (int x_i = 0; x_i < data.n_x; ++x_i)
         {
@@ -461,7 +471,7 @@ namespace bgk_channel
             ++frame_index;
         }
 
-        for (int iter = 0; iter < data.max_iterations; ++iter)
+        for (int iter = 0; iter < iteration_limit; ++iter)
         {
             const MacroState<T> macro = computeMacroState(state, data.velocity_grid, data.particle_mass, data.boltzmann_over_mass);
             std::vector<std::vector<T>> local_equilibria(data.n_x);
@@ -542,18 +552,17 @@ namespace bgk_channel
             applyVelocityBoundary(next, data.vmin_boundary, data.vmax_boundary);
 
             const T residual = std::sqrt(change_norm_squared / std::max(previous_norm_squared, T(1e-30)));
-            convergence_history.push_back(residual);
             state = std::move(next);
 
             if (snapshot_folder != nullptr &&
                 data.snapshot_interval > 0 &&
-                (((iter + 1) % data.snapshot_interval) == 0 || residual < data.tolerance || iter + 1 == data.max_iterations))
+                (((iter + 1) % data.snapshot_interval) == 0 || residual < data.tolerance || iter + 1 == iteration_limit))
             {
                 writeDistributionSnapshot(*snapshot_folder, data, state, frame_index, T(iter + 1) * stability_dt);
                 ++frame_index;
             }
 
-            if (residual < data.tolerance)
+            if (residual < data.tolerance && (data.final_time <= T(0) || T(iter + 1) * stability_dt >= data.final_time))
             {
                 break;
             }
@@ -565,8 +574,7 @@ namespace bgk_channel
     template <std::floating_point T>
     inline ChannelState<T> solveSteadyChannelBGK(const ChannelProblemData<T> &data)
     {
-        std::vector<T> unused_convergence_history;
-        return solveSteadyChannelBGK(data, unused_convergence_history);
+        return solveSteadyChannelBGK(data, nullptr);
     }
 
     template <std::floating_point T>

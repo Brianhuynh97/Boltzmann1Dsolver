@@ -62,6 +62,9 @@ v df/dx = (M[f] - f) / tau
 
 The solver performs directional sweeps through the 1D domain:
 
+- a finite-volume discrete velocity method for the transport term
+- a first-order Godunov upwind flux in physical space
+- explicit Euler time integration for the transient marching step
 - particles with positive `v` sweep from the left wall to the right
 - particles with negative `v` sweep from the right wall to the left
 - incoming wall values are built from wall Maxwellians scaled by the outgoing flux, so each wall has zero net normal mass flux
