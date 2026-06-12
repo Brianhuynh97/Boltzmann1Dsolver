@@ -65,7 +65,7 @@ namespace
             400,
             1e-7);
 
-        data.body_force = 0.4;
+        data.body_force = 0.0;
         data.final_time = 8.0;
         data.snapshot_interval = 20;
 

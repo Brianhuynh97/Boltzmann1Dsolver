@@ -443,7 +443,6 @@ namespace bgk_channel
                 : std::numeric_limits<T>::max();
         // The explicit time step resolves x-transport, c-transport, and BGK relaxation:
         //   df/dt + c df/dx + (b/m) df/dc = -nu (f - f_eq).
-        // Snapshot times recorded for the GIF are multiples of this dt.
         const T stability_dt = std::min({transport_dt, velocity_dt, collision_dt});
         const int time_limited_iterations =
             data.final_time > T(0)
@@ -451,7 +450,7 @@ namespace bgk_channel
                 : data.max_iterations;
         const int iteration_limit =
             data.final_time > T(0)
-                ? std::min(data.max_iterations, time_limited_iterations)
+                ? time_limited_iterations
                 : data.max_iterations;
 
         for (int x_i = 0; x_i < data.n_x; ++x_i)
@@ -461,7 +460,7 @@ namespace bgk_channel
                 state.at(x_i, v_i) = reference_equilibrium[v_i];
             }
         }
-        // Enforce the selected velocity-space boundary conditions on the truncated domain.
+        // Enforce the selected velocity-space boundary conditions
         applyVelocityBoundary(state, data.vmin_boundary, data.vmax_boundary);
 
         int frame_index = 0;
@@ -497,7 +496,7 @@ namespace bgk_channel
                     for (int x_i = 0; x_i < data.n_x; ++x_i)
                     {
                         const T f = state.at(x_i, v_i);
-                        const T x_upwind = (f - inflow_value) / dx;
+                        const T x_upwind = (f - inflow_value) / dx; // upwind finite difference for the spatial derivative
                         const T c_upwind = velocityDerivativeUpwind(state, data.velocity_grid, acceleration, x_i, v_i);
                         const T rhs =
                             -c * x_upwind - acceleration * c_upwind - data.collision_frequency * (f - local_equilibria[x_i][v_i]);
@@ -511,7 +510,7 @@ namespace bgk_channel
                     for (int x_i = data.n_x - 1; x_i >= 0; --x_i)
                     {
                         const T f = state.at(x_i, v_i);
-                        const T x_upwind = (inflow_value - f) / dx;
+                        const T x_upwind = (inflow_value - f) / dx; // upwind finite difference for the spatial derivative
                         const T c_upwind = velocityDerivativeUpwind(state, data.velocity_grid, acceleration, x_i, v_i);
                         const T rhs =
                             -c * x_upwind - acceleration * c_upwind - data.collision_frequency * (f - local_equilibria[x_i][v_i]);
